@@ -385,14 +385,29 @@ async function servirEstatico(req, res, ruta) {
     }
 
     const ext = path.extname(destino).toLowerCase();
-    const esHtml = ext === '.html';
+
+    // El HTML, el CSS y el JS cambian en cada despliegue: si se cachean a lo
+    // bruto, quien ya haya visitado la pagina se queda con la version vieja y
+    // la tienda le aparece rota. Se revalidan siempre (un 304 es baratisimo).
+    // Las fotos no cambian nunca, asi que esas si van con cache larga.
+    const revalidar = ext === '.html' || ext === '.css' || ext === '.js';
+
+    const marca = info.mtime.toUTCString();
+    const etiqueta = '"' + info.size.toString(16) + '-' + info.mtimeMs.toString(16) + '"';
+
+    // Si el navegador ya tiene esta misma version, no hace falta reenviarla.
+    if (req.headers['if-none-match'] === etiqueta ||
+        req.headers['if-modified-since'] === marca) {
+      res.writeHead(304, { 'ETag': etiqueta, 'Cache-Control': revalidar ? 'no-cache' : 'public, max-age=2592000' });
+      return res.end();
+    }
 
     res.writeHead(200, {
       'Content-Type': TIPOS[ext] || 'application/octet-stream',
       'Content-Length': info.size,
-      'Cache-Control': esHtml
-        ? 'no-cache, must-revalidate'
-        : 'public, max-age=2592000',
+      'Cache-Control': revalidar ? 'no-cache' : 'public, max-age=2592000',
+      'Last-Modified': marca,
+      'ETag': etiqueta,
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'strict-origin-when-cross-origin'

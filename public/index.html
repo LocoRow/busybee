@@ -39,7 +39,7 @@
       <a href="#ritual">El ritual</a>
       <a href="#taller">El taller</a>
       <a href="#historia">Quién soy</a>
-      <a href="#pedido">Pedidos</a>
+      <a href="#pedido">Contacto</a>
       <button type="button" class="carrito" id="abrir-cesta" aria-label="Abrir la cesta">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="20" height="20" aria-hidden="true">
           <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
@@ -172,7 +172,7 @@
           <div class="producto__ficha"><span>8 cm</span><span>≈ 14 h</span><span>120 g</span></div>
           <div class="producto__pie">
             <p class="producto__precio">14&nbsp;€<small>unidad</small></p>
-            <button class="btn-anadir" data-id="colmena" data-foto="assets/img/vela-colmena.jpg" data-nombre="Colmena" data-precio="14">
+            <button class="btn-anadir" data-id="colmena" data-ficha="8 cm · ≈ 14 h · 120 g" data-foto="assets/img/vela-colmena.jpg" data-nombre="Colmena" data-precio="14">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -190,7 +190,7 @@
           <div class="producto__ficha"><span>9 cm</span><span>≈ 18 h</span><span>160 g</span></div>
           <div class="producto__pie">
             <p class="producto__precio">16&nbsp;€<small>unidad</small></p>
-            <button class="btn-anadir" data-id="panal" data-foto="assets/img/vela-panal.jpg" data-nombre="Panal" data-precio="16">
+            <button class="btn-anadir" data-id="panal" data-ficha="9 cm · ≈ 18 h · 160 g" data-foto="assets/img/vela-panal.jpg" data-nombre="Panal" data-precio="16">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -209,7 +209,7 @@
           <div class="producto__ficha"><span>16 cm</span><span>≈ 6 h</span><span>Pack de 3</span></div>
           <div class="producto__pie">
             <p class="producto__precio">12&nbsp;€<small>el pack</small></p>
-            <button class="btn-anadir" data-id="trio" data-foto="assets/img/velas-laminadas.jpg" data-nombre="Trío enrollado" data-precio="12">
+            <button class="btn-anadir" data-id="trio" data-ficha="16 cm · ≈ 6 h · pack de 3" data-foto="assets/img/velas-laminadas.jpg" data-nombre="Trío enrollado" data-precio="12">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -228,7 +228,7 @@
           <div class="producto__ficha"><span>11 cm</span><span>≈ 5 h</span><span>Otoño</span></div>
           <div class="producto__pie">
             <p class="producto__precio">8&nbsp;€<small>unidad</small></p>
-            <button class="btn-anadir" data-id="hoja" data-foto="assets/img/molde-hoja.jpg" data-nombre="Hoja de arce" data-precio="8">
+            <button class="btn-anadir" data-id="hoja" data-ficha="11 cm · ≈ 5 h · otoño" data-foto="assets/img/molde-hoja.jpg" data-nombre="Hoja de arce" data-precio="8">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -246,7 +246,7 @@
           <div class="producto__ficha"><span>Surtido</span><span>6 piezas</span><span>Edición corta</span></div>
           <div class="producto__pie">
             <p class="producto__precio">22&nbsp;€<small>la cesta</small></p>
-            <button class="btn-anadir" data-id="cesta" data-foto="assets/img/moldes-otono.jpg" data-nombre="Cesta de otoño" data-precio="22">
+            <button class="btn-anadir" data-id="cesta" data-ficha="surtido · 6 piezas" data-foto="assets/img/moldes-otono.jpg" data-nombre="Cesta de otoño" data-precio="22">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -265,7 +265,7 @@
           <div class="producto__ficha"><span>3 referencias</span><span>Envuelto</span><span>Ahorra 5 €</span></div>
           <div class="producto__pie">
             <p class="producto__precio">37&nbsp;€<small>la caja</small></p>
-            <button class="btn-anadir" data-id="caja" data-foto="assets/img/fundir-cera.jpg" data-nombre="Caja Colmena" data-precio="37">
+            <button class="btn-anadir" data-id="caja" data-ficha="3 referencias · envuelto" data-foto="assets/img/fundir-cera.jpg" data-nombre="Caja Colmena" data-precio="37">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
               Añadir
             </button>
@@ -446,11 +446,12 @@
 
   <div class="contenedor pedido__rejilla">
     <div class="revelar">
-      <p class="antetitulo">Hacer un pedido</p>
+      <p class="antetitulo">Contacto</p>
       <h2>Cuéntame qué necesitas</h2>
       <p>
-        De momento no hay carrito ni pasarela de pago: se habla, se acuerda y se envía.
-        Escríbeme por donde te resulte más cómodo y te digo qué hay disponible esta temporada.
+        Para pedir, lo más cómodo es la cesta: eliges las velas y me llegan tus datos al momento.
+        Pero si prefieres preguntar antes, encargar algo a medida o simplemente saludar,
+        escríbeme por donde te resulte más fácil.
       </p>
 
       <div class="canales">
@@ -529,7 +530,7 @@
           <li><a href="#velas">Todas las velas</a></li>
           <li><a href="#ritual">El ritual 11 · 22</a></li>
           <li><a href="#taller">Cómo se hace</a></li>
-          <li><a href="#pedido">Hacer un pedido</a></li>
+          <li><a href="#pedido">Contacto</a></li>
         </ul>
       </div>
 
@@ -550,120 +551,142 @@
 </footer>
 
 
-<!-- ══════════════════════════════ CESTA ══════════════════════════════ -->
-<div class="velo" id="velo" hidden></div>
+<!-- ══════════════════════════════ PANTALLA DE PEDIDO ══════════════════════════════ -->
+<div class="pantalla" id="pantalla" role="dialog" aria-modal="true" aria-labelledby="pantalla-titulo" hidden>
 
-<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-titulo" aria-hidden="true">
-
-  <div class="panel__cabecera">
-    <h2 class="panel__titulo" id="panel-titulo">Tu cesta</h2>
-    <button type="button" class="panel__cerrar" id="cerrar-cesta" aria-label="Cerrar la cesta">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
-    </button>
-  </div>
-
-  <!-- paso 1: los productos -->
-  <div class="paso-panel activo" id="paso-cesta">
-    <div class="panel__cuerpo">
-      <div id="lineas"></div>
-    </div>
-    <div class="panel__pie" id="pie-cesta">
-      <div class="resumen">
-        <span>Total</span>
-        <strong id="total-cesta">0 €</strong>
-      </div>
-      <p class="nota-envio">El envío se acuerda por mensaje según destino.</p>
-      <button type="button" class="btn btn--miel" id="ir-datos">
-        Continuar
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+  <header class="pantalla__barra">
+    <div class="contenedor pantalla__barra-fila">
+      <span class="marca">
+        <img class="marca__logo" src="assets/img/logo.jpg" alt="" width="44" height="44">
+        <span class="marca__texto">
+          <span class="marca__nombre">Busy Bee</span>
+          <span class="marca__lema">Arts and Crafts</span>
+        </span>
+      </span>
+      <button type="button" class="volver" id="cerrar-pantalla">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+        Seguir mirando velas
       </button>
     </div>
-  </div>
+  </header>
 
-  <!-- paso 2: los datos -->
-  <div class="paso-panel" id="paso-datos">
-    <form id="form-pedido" novalidate>
-      <div class="panel__cuerpo">
-        <button type="button" class="enlace-atras" id="volver-cesta">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
-          Volver a la cesta
-        </button>
+  <!-- ---------- vista principal: cesta + datos ---------- -->
+  <div class="contenedor pantalla__cuerpo" id="vista-pedido">
 
-        <div class="error-envio" id="error-pedido" hidden></div>
-
-        <div class="campo">
-          <label for="p-nombre">Nombre y apellidos *</label>
-          <input type="text" id="p-nombre" name="nombre" autocomplete="name" required maxlength="80">
-        </div>
-
-        <div class="campo">
-          <label for="p-telefono">Teléfono *</label>
-          <input type="tel" id="p-telefono" name="telefono" autocomplete="tel" required maxlength="25" placeholder="600 00 00 00">
-        </div>
-
-        <div class="campo">
-          <label for="p-email">Correo <span style="text-transform:none;letter-spacing:0">(opcional)</span></label>
-          <input type="email" id="p-email" name="email" autocomplete="email" maxlength="120">
-        </div>
-
-        <div class="campo">
-          <label for="p-direccion">Dirección *</label>
-          <input type="text" id="p-direccion" name="direccion" autocomplete="street-address" required maxlength="160" placeholder="Calle, número, piso">
-        </div>
-
-        <div class="dos-columnas">
-          <div class="campo">
-            <label for="p-cp">C. postal *</label>
-            <input type="text" id="p-cp" name="cp" autocomplete="postal-code" required inputmode="numeric" maxlength="10">
-          </div>
-          <div class="campo">
-            <label for="p-poblacion">Población *</label>
-            <input type="text" id="p-poblacion" name="poblacion" autocomplete="address-level2" required maxlength="80">
-          </div>
-        </div>
-
-        <div class="campo">
-          <label for="p-notas">Notas <span style="text-transform:none;letter-spacing:0">(opcional)</span></label>
-          <textarea id="p-notas" name="notas" maxlength="500" placeholder="Si es para regalo, fechas, lo que necesites…"></textarea>
-        </div>
-
-        <div class="trampa" aria-hidden="true">
-          <label for="p-web">No rellenes esto</label>
-          <input type="text" id="p-web" name="web" tabindex="-1" autocomplete="off">
-        </div>
-      </div>
-
-      <div class="panel__pie">
-        <div class="resumen">
-          <span>Total</span>
-          <strong id="total-datos">0 €</strong>
-        </div>
-        <button type="submit" class="btn btn--miel" id="enviar-pedido">Enviar solicitud</button>
-        <p class="nota-envio" style="margin:.8rem 0 0">No se paga nada ahora. Raquel te escribe para confirmar.</p>
-      </div>
-    </form>
-  </div>
-
-  <!-- paso 3: confirmacion -->
-  <div class="paso-panel" id="paso-hecho">
-    <div class="panel__cuerpo">
-      <div class="hecho">
-        <div class="hecho__marca">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m5 13 4.5 4.5L19 8"/></svg>
-        </div>
-        <h3>¡Solicitud enviada!</h3>
-        <p>Tu pedido ya le ha llegado a Raquel al móvil.</p>
-        <div class="referencia" id="ref-pedido">BB-00000</div>
-        <p>Se pondrá en contacto contigo <strong>en menos de 24&nbsp;h</strong> para confirmar disponibilidad, envío y forma de pago.</p>
-        <p style="font-size:.84rem;margin-top:1.4rem">Guarda esa referencia por si quieres preguntar por el pedido.</p>
-      </div>
+    <div class="pantalla__titular">
+      <p class="antetitulo">Casi está</p>
+      <h1 id="pantalla-titulo">Tu pedido</h1>
     </div>
-    <div class="panel__pie">
-      <button type="button" class="btn btn--linea" id="cerrar-hecho">Seguir mirando</button>
+
+    <!-- cesta vacía -->
+    <div class="vacia" id="cesta-vacia" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">
+        <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+      </svg>
+      <h3>Todavía no has puesto nada</h3>
+      <p>Elige alguna vela y vuelve por aquí.</p>
+      <button type="button" class="btn btn--miel" id="ir-catalogo">Ver las velas</button>
+    </div>
+
+    <div class="pedido-rejilla" id="pedido-rejilla">
+
+      <!-- columna izquierda: la lista -->
+      <section class="bloque">
+        <h2 class="bloque__titulo">
+          Lo que llevas
+          <span class="bloque__cuenta" id="cuenta-articulos"></span>
+        </h2>
+
+        <ul class="lista-cesta" id="lineas"></ul>
+
+        <div class="totales">
+          <div class="totales__fila">
+            <span>Subtotal</span>
+            <span id="subtotal">0 €</span>
+          </div>
+          <div class="totales__fila totales__fila--suave">
+            <span>Envío</span>
+            <span>a convenir</span>
+          </div>
+          <div class="totales__fila totales__fila--fuerte">
+            <span>Total</span>
+            <strong id="total-pedido">0 €</strong>
+          </div>
+        </div>
+      </section>
+
+      <!-- columna derecha: los datos -->
+      <section class="bloque bloque--pegajoso">
+        <h2 class="bloque__titulo">Tus datos</h2>
+
+        <form id="form-pedido" novalidate>
+          <div class="error-envio" id="error-pedido" hidden></div>
+
+          <div class="campo">
+            <label for="p-nombre">Nombre y apellidos *</label>
+            <input type="text" id="p-nombre" name="nombre" autocomplete="name" required maxlength="80">
+          </div>
+
+          <div class="campo">
+            <label for="p-telefono">Teléfono *</label>
+            <input type="tel" id="p-telefono" name="telefono" autocomplete="tel" required maxlength="25" placeholder="600 00 00 00">
+          </div>
+
+          <div class="campo">
+            <label for="p-email">Correo <span class="opcional">(opcional)</span></label>
+            <input type="email" id="p-email" name="email" autocomplete="email" maxlength="120">
+          </div>
+
+          <div class="campo">
+            <label for="p-direccion">Dirección *</label>
+            <input type="text" id="p-direccion" name="direccion" autocomplete="street-address" required maxlength="160" placeholder="Calle, número, piso">
+          </div>
+
+          <div class="dos-columnas">
+            <div class="campo">
+              <label for="p-cp">C. postal *</label>
+              <input type="text" id="p-cp" name="cp" autocomplete="postal-code" required inputmode="numeric" maxlength="10">
+            </div>
+            <div class="campo">
+              <label for="p-poblacion">Población *</label>
+              <input type="text" id="p-poblacion" name="poblacion" autocomplete="address-level2" required maxlength="80">
+            </div>
+          </div>
+
+          <div class="campo">
+            <label for="p-notas">Notas <span class="opcional">(opcional)</span></label>
+            <textarea id="p-notas" name="notas" maxlength="500" placeholder="Si es para regalo, fechas, lo que necesites…"></textarea>
+          </div>
+
+          <div class="trampa" aria-hidden="true">
+            <label for="p-web">No rellenes esto</label>
+            <input type="text" id="p-web" name="web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="btn btn--miel" id="enviar-pedido">Enviar solicitud</button>
+          <p class="aviso">No se paga nada ahora. Raquel te escribe para confirmar disponibilidad, envío y forma de pago.</p>
+        </form>
+      </section>
+
     </div>
   </div>
 
-</aside>
+  <!-- ---------- vista de confirmación ---------- -->
+  <div class="contenedor pantalla__cuerpo" id="vista-hecho" hidden>
+    <div class="hecho">
+      <div class="hecho__marca">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m5 13 4.5 4.5L19 8"/></svg>
+      </div>
+      <h2>¡Solicitud enviada!</h2>
+      <p>Tu pedido ya le ha llegado a Raquel al móvil.</p>
+      <div class="referencia" id="ref-pedido">BB-00000</div>
+      <p>Se pondrá en contacto contigo <strong>en menos de 24&nbsp;h</strong> para confirmar disponibilidad, envío y forma de pago.</p>
+      <p class="hecho__nota">Guarda esa referencia por si quieres preguntar por el pedido.</p>
+      <button type="button" class="btn btn--linea" id="cerrar-hecho">Volver a la tienda</button>
+    </div>
+  </div>
+
+</div>
 
 <!-- aviso flotante -->
 <div class="brindis" id="brindis" role="status" aria-live="polite">

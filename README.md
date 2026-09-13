@@ -13,7 +13,7 @@ vendedora por Telegram.
 server.js                    sirve public/ y expone /api/pedido y /api/consulta
 public/index.html            una sola página con todas las secciones
 public/assets/css/style.css  estilos, paleta y animaciones
-public/assets/js/main.js     animaciones y la cesta
+public/assets/js/main.js     animaciones y la cesta (pantalla completa de pedido)
 public/assets/img/           fotografías del perfil de Instagram
 Dockerfile                   imagen de Node con el sitio dentro
 ```

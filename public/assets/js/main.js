@@ -132,10 +132,11 @@
   /* ------------------------------------------------------------------
      Cesta
      Vive en localStorage, así que sobrevive a recargas y a cerrar el móvil.
-     Los precios de aquí son sólo para enseñarlos: el pedido que se envía
-     lleva identificadores y cantidades, y el precio bueno lo pone el servidor.
+     Los precios de aquí son sólo para enseñarlos: al pedir se mandan
+     identificadores y cantidades, y el precio bueno lo pone el servidor.
      ------------------------------------------------------------------ */
   var LLAVE = 'busybee.cesta.v1';
+  var MAXIMO = 20;
   var cesta = [];
 
   try {
@@ -161,6 +162,15 @@
 
   function euros(n) { return n + ' €'; }
 
+  /** Evita que un nombre con caracteres raros se cuele como HTML. */
+  function esc(t) {
+    return String(t == null ? '' : t)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
   /* --- avisos flotantes --- */
   var brindis = document.getElementById('brindis');
   var brindisTexto = document.getElementById('brindis-texto');
@@ -174,111 +184,121 @@
     temporizador = setTimeout(function () { brindis.classList.remove('visible'); }, 2800);
   }
 
-  /* --- elementos del panel --- */
-  var panel = document.getElementById('panel');
-  var velo = document.getElementById('velo');
+  /* --- elementos de la pantalla --- */
+  var pantalla = document.getElementById('pantalla');
+  var vistaPedido = document.getElementById('vista-pedido');
+  var vistaHecho = document.getElementById('vista-hecho');
+  var rejilla = document.getElementById('pedido-rejilla');
+  var cestaVacia = document.getElementById('cesta-vacia');
   var lineasCaja = document.getElementById('lineas');
-  var pieCesta = document.getElementById('pie-cesta');
   var num = document.getElementById('carrito-num');
-  var totalCesta = document.getElementById('total-cesta');
-  var totalDatos = document.getElementById('total-datos');
+  var cuenta = document.getElementById('cuenta-articulos');
+  var subtotal = document.getElementById('subtotal');
+  var totalPedido = document.getElementById('total-pedido');
   var formPedido = document.getElementById('form-pedido');
   var errorPedido = document.getElementById('error-pedido');
 
   function pintar() {
+    var u = unidades();
+
     if (num) {
-      num.textContent = String(unidades());
+      num.textContent = String(u);
       num.classList.add('saltar');
       setTimeout(function () { num.classList.remove('saltar'); }, 300);
     }
 
-    if (totalCesta) totalCesta.textContent = euros(total());
-    if (totalDatos) totalDatos.textContent = euros(total());
-    if (pieCesta) pieCesta.hidden = cesta.length === 0;
-    if (!lineasCaja) return;
+    if (cuenta) cuenta.textContent = u === 1 ? '1 artículo' : u + ' artículos';
+    if (subtotal) subtotal.textContent = euros(total());
+    if (totalPedido) totalPedido.textContent = euros(total());
 
-    if (!cesta.length) {
-      lineasCaja.innerHTML =
-        '<div class="vacia">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" aria-hidden="true">' +
-            '<path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/>' +
-            '<path d="M16 10a4 4 0 0 1-8 0"/>' +
-          '</svg>' +
-          '<p>Todavía no has puesto nada.</p>' +
-          '<p style="font-size:.86rem">Las velas están un poco más arriba.</p>' +
-        '</div>';
-      return;
-    }
+    // Con la cesta vacía no tiene sentido enseñar la lista ni el formulario.
+    if (rejilla) rejilla.hidden = cesta.length === 0;
+    if (cestaVacia) cestaVacia.hidden = cesta.length > 0;
+
+    if (!lineasCaja) return;
 
     var trozos = [];
     for (var i = 0; i < cesta.length; i++) {
       var l = cesta[i];
       trozos.push(
-        '<div class="linea">' +
-          '<img class="linea__foto" src="' + l.foto + '" alt="" width="64" height="64" loading="lazy">' +
-          '<div>' +
-            '<div class="linea__nombre">' + l.nombre + '</div>' +
-            '<div class="linea__precio">' + euros(l.precio) + ' · ' + euros(l.precio * l.cantidad) + '</div>' +
-            '<a class="linea__quitar" href="#" data-quitar="' + l.id + '">Quitar</a>' +
+        '<li class="articulo">' +
+          '<img class="articulo__foto" src="' + esc(l.foto) + '" alt="" width="88" height="88" loading="lazy">' +
+          '<div class="articulo__datos">' +
+            '<h3 class="articulo__nombre">' + esc(l.nombre) + '</h3>' +
+            (l.ficha ? '<p class="articulo__ficha">' + esc(l.ficha) + '</p>' : '') +
+            '<p class="articulo__unidad">' + euros(l.precio) + ' la unidad</p>' +
           '</div>' +
-          '<div class="contador">' +
-            '<button type="button" data-menos="' + l.id + '" aria-label="Una unidad menos">−</button>' +
-            '<span>' + l.cantidad + '</span>' +
-            '<button type="button" data-mas="' + l.id + '" aria-label="Una unidad más">+</button>' +
+          '<div class="articulo__acciones">' +
+            '<span class="articulo__importe">' + euros(l.precio * l.cantidad) + '</span>' +
+            '<div class="contador">' +
+              '<button type="button" data-menos="' + esc(l.id) + '" aria-label="Una unidad menos de ' + esc(l.nombre) + '">−</button>' +
+              '<span aria-label="' + l.cantidad + ' unidades">' + l.cantidad + '</span>' +
+              '<button type="button" data-mas="' + esc(l.id) + '"' + (l.cantidad >= MAXIMO ? ' disabled' : '') +
+                ' aria-label="Una unidad más de ' + esc(l.nombre) + '">+</button>' +
+            '</div>' +
+            '<button type="button" class="articulo__quitar" data-quitar="' + esc(l.id) + '">Quitar</button>' +
           '</div>' +
-        '</div>'
+        '</li>'
       );
     }
     lineasCaja.innerHTML = trozos.join('');
   }
 
-  /* --- abrir, cerrar y moverse entre pasos --- */
+  /* --- abrir y cerrar la pantalla --- */
   var ultimoFoco = null;
 
-  function irA(paso) {
-    ['paso-cesta', 'paso-datos', 'paso-hecho'].forEach(function (id) {
-      var el = document.getElementById(id);
-      if (el) el.classList.toggle('activo', id === paso);
-    });
-  }
-
   function abrir() {
-    if (!panel) return;
+    if (!pantalla) return;
     ultimoFoco = document.activeElement;
-    velo.hidden = false;
-    requestAnimationFrame(function () {
-      velo.classList.add('visible');
-      panel.classList.add('abierto');
-    });
-    panel.setAttribute('aria-hidden', 'false');
+    vistaHecho.hidden = true;
+    vistaPedido.hidden = false;
+    pantalla.hidden = false;
     document.body.style.overflow = 'hidden';
-    if (!document.getElementById('paso-hecho').classList.contains('activo')) irA('paso-cesta');
+    pantalla.scrollTop = 0;
     pintar();
-    var cerrarBtn = document.getElementById('cerrar-cesta');
+    var cerrarBtn = document.getElementById('cerrar-pantalla');
     if (cerrarBtn) cerrarBtn.focus();
   }
 
   function cerrar() {
-    if (!panel) return;
-    panel.classList.remove('abierto');
-    velo.classList.remove('visible');
-    panel.setAttribute('aria-hidden', 'true');
+    if (!pantalla) return;
+    pantalla.hidden = true;
     document.body.style.overflow = '';
-    setTimeout(function () { velo.hidden = true; }, 420);
     if (ultimoFoco && ultimoFoco.focus) ultimoFoco.focus();
   }
 
   var botonAbrir = document.getElementById('abrir-cesta');
-  if (botonAbrir) botonAbrir.addEventListener('click', abrir);
-  var botonCerrar = document.getElementById('cerrar-cesta');
+  if (botonAbrir) {
+    botonAbrir.addEventListener('click', function () {
+      // En móvil el menú puede estar abierto por encima.
+      if (nav && nav.classList.contains('abierta')) {
+        nav.classList.remove('abierta');
+        menuBtn.setAttribute('aria-expanded', 'false');
+      }
+      abrir();
+    });
+  }
+
+  var botonCerrar = document.getElementById('cerrar-pantalla');
   if (botonCerrar) botonCerrar.addEventListener('click', cerrar);
-  if (velo) velo.addEventListener('click', cerrar);
+
+  var cerrarHecho = document.getElementById('cerrar-hecho');
+  if (cerrarHecho) cerrarHecho.addEventListener('click', cerrar);
+
+  var irCatalogo = document.getElementById('ir-catalogo');
+  if (irCatalogo) {
+    irCatalogo.addEventListener('click', function () {
+      cerrar();
+      var destino = document.getElementById('velas');
+      if (destino) destino.scrollIntoView({ behavior: menosMovimiento ? 'auto' : 'smooth' });
+    });
+  }
 
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && panel && panel.classList.contains('abierto')) cerrar();
+    if (e.key === 'Escape' && pantalla && !pantalla.hidden) cerrar();
   });
 
-  /* --- añadir desde las fichas --- */
+  /* --- añadir desde las fichas del catálogo --- */
   document.addEventListener('click', function (e) {
     var boton = e.target.closest('.btn-anadir');
     if (!boton) return;
@@ -287,13 +307,18 @@
     var linea = cesta.filter(function (l) { return l.id === id; })[0];
 
     if (linea) {
-      linea.cantidad = Math.min(linea.cantidad + 1, 20);
+      if (linea.cantidad >= MAXIMO) {
+        avisar('Máximo ' + MAXIMO + ' unidades. Para más, escríbeme.');
+        return;
+      }
+      linea.cantidad += 1;
     } else {
       cesta.push({
         id: id,
         nombre: boton.getAttribute('data-nombre'),
         precio: Number(boton.getAttribute('data-precio')),
         foto: boton.getAttribute('data-foto'),
+        ficha: boton.getAttribute('data-ficha') || '',
         cantidad: 1
       });
     }
@@ -303,14 +328,13 @@
     avisar(boton.getAttribute('data-nombre') + ' en la cesta · ' + euros(total()));
   });
 
-  /* --- cantidades dentro del panel --- */
+  /* --- cantidades dentro de la lista --- */
   if (lineasCaja) {
     lineasCaja.addEventListener('click', function (e) {
       var mas = e.target.closest('[data-mas]');
       var menos = e.target.closest('[data-menos]');
       var quitar = e.target.closest('[data-quitar]');
       if (!mas && !menos && !quitar) return;
-      e.preventDefault();
 
       var id = mas ? mas.getAttribute('data-mas')
              : menos ? menos.getAttribute('data-menos')
@@ -319,7 +343,7 @@
       var linea = cesta.filter(function (l) { return l.id === id; })[0];
       if (!linea) return;
 
-      if (mas) linea.cantidad = Math.min(linea.cantidad + 1, 20);
+      if (mas) linea.cantidad = Math.min(linea.cantidad + 1, MAXIMO);
       else if (menos) linea.cantidad -= 1;
 
       if (quitar || linea.cantidad < 1) {
@@ -331,28 +355,12 @@
     });
   }
 
-  var irDatos = document.getElementById('ir-datos');
-  if (irDatos) {
-    irDatos.addEventListener('click', function () {
-      if (!cesta.length) { avisar('La cesta está vacía'); return; }
-      irA('paso-datos');
-      var primero = document.getElementById('p-nombre');
-      if (primero) primero.focus();
-    });
-  }
-
-  var volver = document.getElementById('volver-cesta');
-  if (volver) volver.addEventListener('click', function () { irA('paso-cesta'); });
-
-  var cerrarHecho = document.getElementById('cerrar-hecho');
-  if (cerrarHecho) {
-    cerrarHecho.addEventListener('click', function () { cerrar(); irA('paso-cesta'); });
-  }
-
   /* --- enviar el pedido --- */
   if (formPedido) {
     formPedido.addEventListener('submit', function (e) {
       e.preventDefault();
+
+      if (!cesta.length) { avisar('La cesta está vacía'); return; }
 
       var boton = document.getElementById('enviar-pedido');
       var datos = new FormData(formPedido);
@@ -369,6 +377,7 @@
       if (fallos.length) {
         errorPedido.textContent = fallos[0];
         errorPedido.hidden = false;
+        errorPedido.scrollIntoView({ block: 'nearest', behavior: menosMovimiento ? 'auto' : 'smooth' });
         return;
       }
 
@@ -402,7 +411,9 @@
           guardar();
           pintar();
           formPedido.reset();
-          irA('paso-hecho');
+          vistaPedido.hidden = true;
+          vistaHecho.hidden = false;
+          pantalla.scrollTop = 0;
         })
         .catch(function (err) {
           errorPedido.textContent = err.message;
@@ -416,6 +427,7 @@
   }
 
   pintar();
+
 
   /* ------------------------------------------------------------------
      Formulario de consulta del pie
