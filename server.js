@@ -34,6 +34,33 @@ const CATALOGO = {
   caja:         { nombre: 'Caja Colmena',     precio: 37 }
 };
 
+/* --------------------------------------------------------------------------
+   Versión de los estáticos.
+
+   Cloudflare cachea el css y el js en el borde, así que tras un despliegue
+   quien ya hubiera entrado seguía recibiendo los ficheros viejos y la tienda
+   le aparecía rota. En vez de purgar la caché a mano cada vez, se les cuelga
+   una versión sacada de la fecha del fichero: al cambiar el fichero cambia la
+   URL, y una URL nueva nunca está cacheada.
+   -------------------------------------------------------------------------- */
+function versionDe(relativa) {
+  try {
+    return fs.statSync(path.join(RAIZ, relativa)).mtimeMs.toString(36);
+  } catch {
+    return '0';
+  }
+}
+
+const V_CSS = versionDe('assets/css/style.css');
+const V_JS  = versionDe('assets/js/main.js');
+
+/** Cuelga la versión de las referencias al css y al js dentro del HTML. */
+function versionar(html) {
+  return html
+    .replace('assets/css/style.css"', 'assets/css/style.css?v=' + V_CSS + '"')
+    .replace('assets/js/main.js"', 'assets/js/main.js?v=' + V_JS + '"');
+}
+
 const MAX_UNIDADES = 20;   // por línea
 const MAX_LINEAS = 12;
 
@@ -368,7 +395,7 @@ async function manejarConsulta(req, res) {
 /* --------------------------------------------------------------------------
    Ficheros estáticos
    -------------------------------------------------------------------------- */
-async function servirEstatico(req, res, ruta) {
+async function servirEstatico(req, res, ruta, versionPedida) {
   // Normalizamos y comprobamos que no se sale de public/
   const limpia = path.normalize(decodeURIComponent(ruta)).replace(/^(\.\.[/\\])+/, '');
   let destino = path.join(RAIZ, limpia);
@@ -385,40 +412,55 @@ async function servirEstatico(req, res, ruta) {
     }
 
     const ext = path.extname(destino).toLowerCase();
+    const esHtml = ext === '.html';
 
-    // El HTML, el CSS y el JS cambian en cada despliegue: si se cachean a lo
-    // bruto, quien ya haya visitado la pagina se queda con la version vieja y
-    // la tienda le aparece rota. Se revalidan siempre (un 304 es baratisimo).
-    // Las fotos no cambian nunca, asi que esas si van con cache larga.
-    const revalidar = ext === '.html' || ext === '.css' || ext === '.js';
+    // El HTML nunca se cachea: es quien reparte las URLs versionadas del resto.
+    // Lo que llega con ?v= puede cachearse para siempre, porque al cambiar el
+    // fichero cambia la URL. Sin ?v= se revalida, por si alguien lo pide a pelo.
+    const cacheado = esHtml
+      ? 'no-cache'
+      : (versionPedida ? 'public, max-age=31536000, immutable' : 'no-cache');
 
     const marca = info.mtime.toUTCString();
     const etiqueta = '"' + info.size.toString(16) + '-' + info.mtimeMs.toString(16) + '"';
 
-    // Si el navegador ya tiene esta misma version, no hace falta reenviarla.
-    if (req.headers['if-none-match'] === etiqueta ||
-        req.headers['if-modified-since'] === marca) {
-      res.writeHead(304, { 'ETag': etiqueta, 'Cache-Control': revalidar ? 'no-cache' : 'public, max-age=2592000' });
-      return res.end();
-    }
-
-    res.writeHead(200, {
-      'Content-Type': TIPOS[ext] || 'application/octet-stream',
-      'Content-Length': info.size,
-      'Cache-Control': revalidar ? 'no-cache' : 'public, max-age=2592000',
-      'Last-Modified': marca,
-      'ETag': etiqueta,
+    const comunes = {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'SAMEORIGIN',
       'Referrer-Policy': 'strict-origin-when-cross-origin'
-    });
+    };
+
+    // Si el navegador ya tiene esta misma version, no hace falta reenviarla.
+    if (!esHtml && (req.headers['if-none-match'] === etiqueta ||
+                    req.headers['if-modified-since'] === marca)) {
+      res.writeHead(304, { 'ETag': etiqueta, 'Cache-Control': cacheado });
+      return res.end();
+    }
+
+    if (esHtml) {
+      const html = versionar(await fsp.readFile(destino, 'utf8'));
+      res.writeHead(200, Object.assign({
+        'Content-Type': TIPOS['.html'],
+        'Content-Length': Buffer.byteLength(html),
+        'Cache-Control': cacheado
+      }, comunes));
+      return req.method === 'HEAD' ? res.end() : res.end(html);
+    }
+
+    res.writeHead(200, Object.assign({
+      'Content-Type': TIPOS[ext] || 'application/octet-stream',
+      'Content-Length': info.size,
+      'Cache-Control': cacheado,
+      'Last-Modified': marca,
+      'ETag': etiqueta
+    }, comunes));
 
     if (req.method === 'HEAD') return res.end();
     fs.createReadStream(destino).pipe(res);
   } catch {
     // Cualquier ruta desconocida devuelve la portada.
     try {
-      const portada = await fsp.readFile(path.join(RAIZ, 'index.html'));
+      const portada = versionar(await fsp.readFile(path.join(RAIZ, 'index.html'), 'utf8'));
       res.writeHead(404, { 'Content-Type': TIPOS['.html'], 'Cache-Control': 'no-cache' });
       res.end(portada);
     } catch {
@@ -457,7 +499,7 @@ const servidor = http.createServer(async (req, res) => {
       return json(res, 405, { ok: false, error: 'Método no permitido' });
     }
 
-    return await servirEstatico(req, res, ruta);
+    return await servirEstatico(req, res, ruta, url.searchParams.has('v'));
   } catch (e) {
     log('Error inesperado:', e && e.stack ? e.stack : e);
     if (!res.headersSent) json(res, 500, { ok: false, error: 'Error del servidor' });
