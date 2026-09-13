@@ -3,19 +3,47 @@
 Sitio de muestra para la venta de velas artesanales de cera de abeja de
 [@busybee.gardenandcrafts](https://www.instagram.com/busybee.gardenandcrafts/) (Valencia).
 
-HTML, CSS y JavaScript sin dependencias ni paso de compilación. Se sirve con nginx
-dentro de un contenedor.
+HTML, CSS y JavaScript sin dependencias ni paso de compilación, con un servidor
+Node mínimo (sólo módulos de serie) que recibe los pedidos y se los manda a la
+vendedora por Telegram.
 
 ## Contenido
 
 ```
-index.html            una sola página con todas las secciones
-assets/css/style.css  estilos, paleta y animaciones
-assets/js/main.js     abejas, polen, revelado al hacer scroll y cesta de demostración
-assets/img/           fotografías del perfil de Instagram
-Dockerfile            imagen de nginx con el sitio dentro
-nginx.conf            compresión, cacheado y cabeceras
+server.js                    sirve public/ y expone /api/pedido y /api/consulta
+public/index.html            una sola página con todas las secciones
+public/assets/css/style.css  estilos, paleta y animaciones
+public/assets/js/main.js     animaciones y la cesta
+public/assets/img/           fotografías del perfil de Instagram
+Dockerfile                   imagen de Node con el sitio dentro
 ```
+
+## Variables de entorno
+
+Se ponen en Coolify, **nunca en el repositorio**:
+
+| Variable | Para qué |
+|---|---|
+| `TELEGRAM_BOT_TOKEN` | el token que da @BotFather |
+| `TELEGRAM_CHAT_ID` | el identificador numérico de la vendedora |
+| `PORT` | opcional, por defecto 3000 |
+
+Sin ellas la página funciona, pero los pedidos sólo quedan en el registro del
+contenedor y al cliente se le pide que escriba por Instagram.
+
+## La API
+
+| Ruta | Qué hace |
+|---|---|
+| `POST /api/pedido` | recibe la cesta y los datos, avisa por Telegram, devuelve una referencia |
+| `POST /api/consulta` | el formulario de contacto del pie |
+| `GET /api/salud` | sonda para el healthcheck |
+
+El navegador manda sólo identificadores y cantidades: **los precios los pone
+`server.js`**, para que nadie pueda encargar nada a un precio manipulado. Si
+cambias un precio hay que tocarlo en `server.js` y en `public/index.html`.
+
+Hay límite de 5 envíos cada 15 minutos por IP y un campo trampa contra robots.
 
 ## Paleta
 
@@ -30,13 +58,13 @@ Tomada del logotipo del perfil:
 ## En local
 
 ```bash
-python -m http.server 8777
+node server.js
 ```
 
 ## Despliegue
 
 Aplicación de Coolify en el Raspberry Pi (`LocoServer`), build pack *Dockerfile*,
-puerto interno **80**, dominio `http://busybee.loco-space.com`.
+puerto interno **3000**, dominio `http://busybee.loco-space.com`.
 
 El tráfico entra por el túnel de Cloudflare, que ya tiene una regla comodín
 `*.loco-space.com → localhost:80`, así que Traefik enruta por cabecera `Host`

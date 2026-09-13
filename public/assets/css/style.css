@@ -763,3 +763,148 @@ p{margin:0 0 1.1em}
   .revelar{opacity:1;transform:none}
   .enjambre,.polen{display:none}
 }
+
+/* ==========================================================================
+   Cesta y pedido
+   ========================================================================== */
+
+/* velo oscuro tras el panel */
+.velo{
+  position:fixed;inset:0;z-index:95;
+  background:rgba(38,51,31,.5);
+  backdrop-filter:blur(3px);
+  opacity:0;visibility:hidden;
+  transition:opacity .4s ease,visibility .4s;
+}
+.velo.visible{opacity:1;visibility:visible}
+
+/* panel lateral */
+.panel{
+  position:fixed;z-index:100;top:0;right:0;
+  width:min(430px,100%);height:100svh;
+  background:var(--cera-50);
+  box-shadow:-20px 0 60px -30px rgba(38,51,31,.7);
+  display:flex;flex-direction:column;
+  transform:translateX(102%);
+  transition:transform .5s cubic-bezier(.22,.61,.36,1);
+}
+.panel.abierto{transform:none}
+
+.panel__cabecera{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:1.3rem 1.5rem;
+  border-bottom:1px solid var(--cera-200);
+  flex:none;
+}
+.panel__titulo{font-family:var(--serif);font-size:1.5rem;color:var(--verde-800);margin:0}
+.panel__cerrar{
+  width:38px;height:38px;border-radius:50%;
+  display:grid;place-items:center;
+  color:var(--verde-700);
+  transition:background var(--transicion),transform var(--transicion);
+}
+.panel__cerrar:hover{background:var(--cera-200);transform:rotate(90deg)}
+.panel__cerrar svg{width:18px;height:18px}
+
+.panel__cuerpo{flex:1;min-height:0;overflow-y:auto;padding:1.5rem;overscroll-behavior:contain}
+.panel__pie{
+  flex:none;padding:1.3rem 1.5rem;
+  border-top:1px solid var(--cera-200);
+  background:var(--cera-100);
+}
+
+/* pasos: el activo hereda la columna flexible para que el pie quede abajo */
+.paso-panel{display:none}
+.paso-panel.activo{
+  display:flex;flex-direction:column;
+  flex:1;min-height:0;
+  animation:entrar .4s cubic-bezier(.22,.61,.36,1);
+}
+.paso-panel.activo > form{display:flex;flex-direction:column;flex:1;min-height:0}
+@keyframes entrar{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+
+/* líneas de la cesta */
+.linea{
+  display:grid;grid-template-columns:64px 1fr auto;gap:.9rem;
+  padding:.9rem 0;border-bottom:1px solid var(--cera-200);
+  align-items:center;
+}
+.linea:last-child{border-bottom:0}
+.linea__foto{width:64px;height:64px;border-radius:var(--radio-s);object-fit:cover;background:var(--cera-200)}
+.linea__nombre{font-family:var(--serif);font-size:1.1rem;color:var(--verde-800);line-height:1.2}
+.linea__precio{font-size:.82rem;color:var(--tinta-suave)}
+.linea__quitar{
+  font-size:.72rem;color:var(--tinta-suave);text-decoration:underline;
+  margin-top:.2rem;display:inline-block;
+}
+.linea__quitar:hover{color:#a33}
+
+.contador{display:flex;align-items:center;gap:.1rem;background:var(--cera-100);border-radius:999px;padding:.2rem}
+.contador button{
+  width:28px;height:28px;border-radius:50%;
+  display:grid;place-items:center;color:var(--verde-700);font-size:1rem;line-height:1;
+  transition:background var(--transicion);
+}
+.contador button:hover{background:var(--miel-300)}
+.contador span{min-width:26px;text-align:center;font-size:.92rem;font-weight:500}
+
+/* cesta vacía */
+.vacia{text-align:center;padding:3rem 1rem;color:var(--tinta-suave)}
+.vacia svg{width:56px;height:56px;color:var(--verde-200);margin:0 auto 1rem}
+
+/* resumen */
+.resumen{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:1rem}
+.resumen span{font-size:.8rem;letter-spacing:.14em;text-transform:uppercase;color:var(--tinta-suave)}
+.resumen strong{font-family:var(--serif);font-size:2rem;color:var(--verde-800);line-height:1}
+.nota-envio{font-size:.76rem;color:var(--tinta-suave);margin:0 0 1rem;text-align:center}
+
+.panel .btn{width:100%;justify-content:center}
+.enlace-atras{
+  display:inline-flex;align-items:center;gap:.4rem;
+  font-size:.8rem;color:var(--verde-700);margin-bottom:1.2rem;
+}
+.enlace-atras:hover{color:var(--miel-600)}
+.enlace-atras svg{width:14px;height:14px}
+
+/* formulario dentro del panel */
+.panel .campo{margin-bottom:.9rem}
+.dos-columnas{display:grid;grid-template-columns:1fr 1.6fr;gap:.7rem}
+
+/* campo trampa para robots: invisible y fuera del recorrido con el tabulador */
+.trampa{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+
+.error-envio{
+  background:#fdeaea;border:1px solid #e9b4b4;color:#8c2b2b;
+  border-radius:var(--radio-s);padding:.8rem 1rem;font-size:.85rem;margin-bottom:1rem;
+}
+
+/* pantalla de confirmación */
+.hecho{text-align:center;padding:2rem .5rem}
+.hecho__marca{
+  width:78px;height:78px;border-radius:50%;margin:0 auto 1.5rem;
+  display:grid;place-items:center;
+  background:var(--verde-700);color:var(--miel-400);
+  animation:aparecer .55s cubic-bezier(.34,1.56,.64,1);
+}
+.hecho__marca svg{width:34px;height:34px}
+@keyframes aparecer{from{transform:scale(.4);opacity:0}to{transform:scale(1);opacity:1}}
+.hecho h3{color:var(--verde-800);margin-bottom:.8rem}
+.hecho p{font-size:.94rem;color:var(--tinta-suave)}
+.referencia{
+  display:inline-block;margin:1rem 0;
+  font-family:var(--serif);font-size:1.7rem;color:var(--verde-800);
+  background:var(--cera-100);border:1px dashed var(--miel-500);
+  border-radius:var(--radio-s);padding:.6rem 1.4rem;letter-spacing:.06em;
+}
+
+/* el botón de la cesta en la cabecera, también en móvil */
+@media (max-width:760px){
+  .carrito{
+    position:fixed;top:1.1rem;right:4.3rem;z-index:81;
+    background:var(--cera-50);border-radius:999px;
+    padding:.45rem .75rem;
+    box-shadow:0 6px 18px -10px rgba(38,51,31,.6);
+  }
+  .nav.abierta .carrito{position:static;box-shadow:none;background:none}
+  .dos-columnas{grid-template-columns:1fr}
+}
