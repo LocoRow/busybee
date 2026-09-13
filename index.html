@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Busy Bee · Velas artesanales de cera de abeja | Valencia</title>
+<meta name="description" content="Velas de cera de abeja hechas a mano en Valencia. Colmenas, panales y velas de miel para el ritual de los días 11 y 22. Cera de nuestras propias colmenas, sin parafina.">
+<meta name="theme-color" content="#3d5138">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Busy Bee · Velas artesanales de cera de abeja">
+<meta property="og:description" content="De la colmena a tu casa. Velas de cera de abeja hechas a mano en Valencia.">
+<meta property="og:image" content="assets/img/velas-laminadas.jpg">
+<meta property="og:locale" content="es_ES">
+
+<link rel="icon" href="assets/img/logo.jpg">
+<link rel="apple-touch-icon" href="assets/img/logo.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- ══════════════════════════════ CABECERA ══════════════════════════════ -->
+<header class="cabecera" id="cabecera">
+  <div class="contenedor cabecera__fila">
+    <a href="#" class="marca" aria-label="Busy Bee, inicio">
+      <img class="marca__logo" src="assets/img/logo.jpg" alt="" width="52" height="52">
+      <span class="marca__texto">
+        <span class="marca__nombre">Busy Bee</span>
+        <span class="marca__lema">Arts and Crafts</span>
+      </span>
+    </a>
+
+    <nav class="nav" id="nav">
+      <a href="#velas">Velas</a>
+      <a href="#ritual">El ritual</a>
+      <a href="#taller">El taller</a>
+      <a href="#historia">Quién soy</a>
+      <a href="#pedido">Pedidos</a>
+      <a href="#velas" class="carrito" aria-label="Cesta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" width="20" height="20" aria-hidden="true">
+          <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span class="carrito__num" id="carrito-num">0</span>
+      </a>
+    </nav>
+
+    <button class="menu-btn" id="menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="nav"><span></span></button>
+  </div>
+</header>
+
+<main>
+
+<!-- ══════════════════════════════ PORTADA ══════════════════════════════ -->
+<section class="portada">
+
+  <!-- trama de panal de fondo -->
+  <svg class="panal-fondo" aria-hidden="true">
+    <defs>
+      <pattern id="panal" width="56" height="97" patternUnits="userSpaceOnUse" patternTransform="scale(1.15)">
+        <path d="M28 0 L56 16 L56 48 L28 64 L0 48 L0 16 Z" fill="none" stroke="#4e6650" stroke-width="1" opacity=".5"/>
+        <path d="M0 48 L0 80 M56 48 L56 80" fill="none" stroke="#4e6650" stroke-width="1" opacity=".5"/>
+        <path d="M28 64 L28 97" fill="none" stroke="#4e6650" stroke-width="1" opacity=".5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#panal)"/>
+  </svg>
+
+  <!-- motas de polen (se rellenan por JS) -->
+  <div class="polen" id="polen" aria-hidden="true"></div>
+
+  <!-- abejas volando -->
+  <div class="enjambre" aria-hidden="true">
+    <div class="abeja abeja--1"></div>
+    <div class="abeja abeja--2"></div>
+    <div class="abeja abeja--3"></div>
+  </div>
+
+  <div class="contenedor portada__rejilla">
+    <div class="portada__contenido">
+      <p class="antetitulo">Apicultura y artesanía · Valencia</p>
+      <h1 class="portada__titulo">De la colmena<br>a tu <em>casa</em></h1>
+      <p class="portada__texto">
+        Velas moldeadas a mano con la cera de nuestras propias abejas. Sin parafina,
+        sin aromas sintéticos: solo cera pura que huele a miel mientras arde y
+        deja el aire más limpio que como lo encontró.
+      </p>
+
+      <div class="portada__acciones">
+        <a href="#velas" class="btn btn--miel">
+          Ver las velas
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+        <a href="#ritual" class="btn btn--linea">El ritual 11 · 22</a>
+      </div>
+
+      <ul class="portada__sellos">
+        <li class="sello">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Z"/><path d="m8 12 3 3 5-6"/></svg>
+          100&nbsp;% cera de abeja
+        </li>
+        <li class="sello">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
+          Hecho en Valencia
+        </li>
+        <li class="sello">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M12 22c5-3 8-7 8-12V4l-8-2-8 2v6c0 5 3 9 8 12Z"/></svg>
+          Mecha de algodón
+        </li>
+      </ul>
+    </div>
+
+    <figure class="portada__foto">
+      <img src="assets/img/velas-laminadas.jpg"
+           alt="Tres velas de cera de abeja laminada, decoradas con abejitas y atadas con un lazo de rafia"
+           width="1100" height="1100" fetchpriority="high">
+      <figcaption class="etiqueta">
+        <strong>100%</strong>
+        <span>cera pura</span>
+      </figcaption>
+    </figure>
+  </div>
+
+  <a href="#velas" class="bajar">
+    <i></i>
+    Desliza
+  </a>
+</section>
+
+<!-- ══════════════════════════════ CINTA ══════════════════════════════ -->
+<div class="cinta" aria-hidden="true">
+  <div class="cinta__pista" id="cinta-pista">
+    <div class="cinta__grupo">
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Cera de nuestras colmenas</span>
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Moldeada a mano</span>
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Sin parafina ni soja</span>
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Arde limpio, sin hollín</span>
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Envuelto en papel kraft</span>
+      <span class="cinta__item"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="4"/></svg> Pequeños lotes de temporada</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════ CATÁLOGO ══════════════════════════════ -->
+<section class="seccion" id="velas">
+  <div class="contenedor">
+
+    <div class="cabecera-seccion revelar">
+      <div>
+        <p class="antetitulo">La colección</p>
+        <h2>Velas que huelen a colmena</h2>
+      </div>
+      <p class="entradilla" style="max-width:38ch">
+        Cada pieza se funde, se vierte y se desmolda a mano. Por eso no hay dos iguales
+        y por eso las tiradas son cortas.
+      </p>
+    </div>
+
+    <div class="rejilla-productos" id="catalogo">
+
+      <article class="producto revelar" data-retardo="1">
+        <div class="producto__foto">
+          <span class="producto__insignia">Más querida</span>
+          <img src="assets/img/vela-colmena.jpg" alt="Vela con forma de colmena tradicional en cera de abeja dorada, sostenida en una mano" loading="lazy" width="540" height="675">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Colmena</h3>
+          <p class="producto__detalle">El clásico de la casa. Un skep antiguo con sus abejas subiendo por la pared, del tamaño justo para una mesilla.</p>
+          <div class="producto__ficha"><span>8 cm</span><span>≈ 14 h</span><span>120 g</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">14&nbsp;€<small>unidad</small></p>
+            <button class="btn-anadir" data-nombre="Colmena" data-precio="14">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="producto revelar" data-retardo="2">
+        <div class="producto__foto">
+          <img src="assets/img/vela-panal.jpg" alt="Vela en forma de cúpula con relieve de panal hexagonal y abejas, en cera dorada" loading="lazy" width="540" height="675">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Panal</h3>
+          <p class="producto__detalle">Cúpula de hexágonos con tres abejas posadas. El relieve va marcando la llama a medida que baja.</p>
+          <div class="producto__ficha"><span>9 cm</span><span>≈ 18 h</span><span>160 g</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">16&nbsp;€<small>unidad</small></p>
+            <button class="btn-anadir" data-nombre="Panal" data-precio="16">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="producto revelar" data-retardo="3">
+        <div class="producto__foto">
+          <span class="producto__insignia producto__insignia--verde">Para el ritual</span>
+          <img src="assets/img/velas-laminadas.jpg" alt="Trío de velas de lámina de cera de abeja enrollada, con abejitas y lazo de rafia" loading="lazy" width="1100" height="1100">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Trío enrollado</h3>
+          <p class="producto__detalle">Tres velas de lámina de cera alveolada, enrolladas a mano y atadas con rafia. Las de los días 11 y 22.</p>
+          <div class="producto__ficha"><span>16 cm</span><span>≈ 6 h</span><span>Pack de 3</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">12&nbsp;€<small>el pack</small></p>
+            <button class="btn-anadir" data-nombre="Trío enrollado" data-precio="12">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="producto revelar" data-retardo="1">
+        <div class="producto__foto">
+          <span class="producto__insignia">Temporada</span>
+          <img src="assets/img/molde-hoja.jpg" alt="Vela con forma de hoja de arce saliendo de su molde de silicona" loading="lazy" width="640" height="480">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Hoja de arce</h3>
+          <p class="producto__detalle">Nervadura marcada, borde irregular. Pensada para flotar en un cuenco de agua o para decorar la mesa sin encender.</p>
+          <div class="producto__ficha"><span>11 cm</span><span>≈ 5 h</span><span>Otoño</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">8&nbsp;€<small>unidad</small></p>
+            <button class="btn-anadir" data-nombre="Hoja de arce" data-precio="8">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="producto revelar" data-retardo="2">
+        <div class="producto__foto">
+          <img src="assets/img/moldes-otono.jpg" alt="Bandeja de moldes de silicona con formas de hojas, bellotas y calabazas" loading="lazy" width="640" height="480">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Cesta de otoño</h3>
+          <p class="producto__detalle">Seis piezas surtidas: hojas, bellotas y una calabaza. Llegan en cesta de rafia, listas para regalar.</p>
+          <div class="producto__ficha"><span>Surtido</span><span>6 piezas</span><span>Edición corta</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">22&nbsp;€<small>la cesta</small></p>
+            <button class="btn-anadir" data-nombre="Cesta de otoño" data-precio="22">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <article class="producto revelar" data-retardo="3">
+        <div class="producto__foto">
+          <span class="producto__insignia producto__insignia--verde">Regalo</span>
+          <img src="assets/img/fundir-cera.jpg" alt="Cera de abeja fundida vertiéndose sobre un molde de piedra" loading="lazy" width="640" height="480">
+        </div>
+        <div class="producto__cuerpo">
+          <h3 class="producto__nombre">Caja Colmena</h3>
+          <p class="producto__detalle">Una Colmena, un Panal y el Trío enrollado, en caja de cartón reciclado con una nota escrita a mano.</p>
+          <div class="producto__ficha"><span>3 referencias</span><span>Envuelto</span><span>Ahorra 5 €</span></div>
+          <div class="producto__pie">
+            <p class="producto__precio">37&nbsp;€<small>la caja</small></p>
+            <button class="btn-anadir" data-nombre="Caja Colmena" data-precio="37">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+              Añadir
+            </button>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- onda de separación hacia la sección verde -->
+<div class="onda" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#33422b" d="M0 80V34c120-22 240-33 360-22s240 44 360 44 240-33 360-44 240 0 360 12v56Z"/></svg>
+</div>
+
+<!-- ══════════════════════════════ RITUAL ══════════════════════════════ -->
+<section class="seccion ritual" id="ritual">
+  <div class="contenedor ritual__rejilla">
+    <div class="revelar">
+      <p class="antetitulo">Una costumbre antigua</p>
+      <h2>El ritual de las velas de miel</h2>
+      <p>
+        Se encienden velas de cera de abeja los días <strong>11</strong> y <strong>22</strong>
+        de cada mes, se deja que ardan un rato y se pide lo que se quiera atraer.
+        No hace falta creérselo del todo: basta con parar diez minutos,
+        con la casa oliendo a miel, y pensar en lo que viene.
+      </p>
+
+      <div class="ritual__fechas">
+        <div class="fecha"><strong>11</strong><span>de cada mes</span></div>
+        <div class="fecha"><strong>22</strong><span>de cada mes</span></div>
+      </div>
+
+      <p>
+        Nuestro <em>Trío enrollado</em> está pensado para eso: tres velas de lámina alveolada
+        que arden unas seis horas cada una, suficiente para los dos días del mes y una de repuesto.
+      </p>
+      <a href="#velas" class="btn btn--miel">Quiero el trío</a>
+    </div>
+
+    <div class="escena-vela revelar" data-retardo="2" aria-hidden="true">
+      <div class="halo"></div>
+      <div class="vela">
+        <div class="vela__llama"></div>
+        <div class="vela__mecha"></div>
+        <div class="vela__cuerpo"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="onda" aria-hidden="true">
+  <svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#33422b" d="M0 0v46c120 22 240 33 360 22s240-44 360-44 240 33 360 44 240 0 360-12V0Z"/></svg>
+</div>
+
+<!-- ══════════════════════════════ TALLER ══════════════════════════════ -->
+<section class="seccion" id="taller">
+  <div class="contenedor">
+    <div class="cabecera-seccion cabecera-seccion--centro revelar">
+      <div>
+        <p class="antetitulo">Del panal a la vela</p>
+        <h2>Cómo se hace</h2>
+        <p class="entradilla" style="margin-inline:auto">
+          Cuatro pasos, ninguna prisa. Entre el opérculo y la vela encendida pasan
+          unos cuantos días y bastantes manos.
+        </p>
+      </div>
+    </div>
+
+    <div class="pasos">
+      <article class="paso revelar" data-retardo="1">
+        <div class="paso__foto">
+          <img src="assets/img/atardecer.jpg" alt="Atardecer sobre el huerto donde están las colmenas" loading="lazy" width="1100" height="618">
+        </div>
+        <h3>Cosechar</h3>
+        <p>Al final del verano se retiran los opérculos de cera que las abejas dejan al sellar la miel. Solo esa parte: el panal se devuelve a la colmena.</p>
+      </article>
+
+      <article class="paso revelar" data-retardo="2">
+        <div class="paso__foto">
+          <img src="assets/img/fundir-cera.jpg" alt="Cera de abeja fundida cayendo en hilo sobre un molde" loading="lazy" width="640" height="480">
+        </div>
+        <h3>Fundir y filtrar</h3>
+        <p>La cera se funde al baño maría, nunca a fuego directo, y se cuela tres veces hasta que sale limpia y con ese color de miel vieja.</p>
+      </article>
+
+      <article class="paso revelar" data-retardo="3">
+        <div class="paso__foto">
+          <img src="assets/img/moldes-otono.jpg" alt="Moldes de silicona con formas de hojas y bellotas esperando la cera" loading="lazy" width="640" height="480">
+        </div>
+        <h3>Verter</h3>
+        <p>Se coloca la mecha de algodón, se vierte a unos 70 grados y se espera. Si se enfría de golpe, la vela se agrieta.</p>
+      </article>
+
+      <article class="paso revelar" data-retardo="4">
+        <div class="paso__foto">
+          <img src="assets/img/molde-hoja.jpg" alt="Vela de hoja recién desmoldada sostenida entre los dedos" loading="lazy" width="640" height="480">
+        </div>
+        <h3>Desmoldar</h3>
+        <p>Veinticuatro horas después sale la pieza. Se repasa el borde, se recorta la mecha a un centímetro y se envuelve en kraft.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ HISTORIA ══════════════════════════════ -->
+<section class="seccion sobre" id="historia">
+  <div class="contenedor sobre__rejilla">
+    <div class="sobre__fotos revelar">
+      <img src="assets/img/jardin-flor.jpg" alt="Flor rosa de bromelia en el jardín" loading="lazy" width="1100" height="1100">
+      <img src="assets/img/jardin-cactus.jpg" alt="Cactus con una flor naranja abierta, en maceta de barro" loading="lazy" width="1100" height="1100">
+      <img src="assets/img/vela-panal.jpg" alt="Vela de panal sostenida frente a un pino" loading="lazy" width="540" height="675">
+    </div>
+
+    <div class="revelar" data-retardo="2">
+      <p class="antetitulo">Quién hay detrás</p>
+      <h2>Busy Bee</h2>
+      <blockquote class="cita">Apicultora, artesana y jardinera. Por ese orden y casi siempre a la vez.</blockquote>
+      <p>
+        Todo empezó por las abejas. Primero una colmena en el huerto, luego dos, y de pronto
+        cada verano sobraba cera que daba pena tirar. Las primeras velas fueron para casa;
+        las siguientes, para quien las pedía.
+      </p>
+      <p>
+        Hoy sigue siendo lo mismo a otra escala: las colmenas están en Valencia, los moldes
+        se prueban en la mesa de la cocina y las tiradas duran lo que dure la cera del año.
+        Cuando se acaba, se acaba, y toca esperar al verano siguiente.
+      </p>
+      <p>
+        Entre medias hay un jardín, bordados a mano y bastantes plantas a las que
+        les debo más de un riego.
+      </p>
+      <p class="firma">— Busy Bee 🍯</p>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ JARDÍN ══════════════════════════════ -->
+<section class="seccion" id="jardin">
+  <div class="contenedor">
+    <div class="cabecera-seccion revelar">
+      <div>
+        <p class="antetitulo">El jardín</p>
+        <h2>Donde todo esto pasa</h2>
+      </div>
+      <a href="https://www.instagram.com/busybee.gardenandcrafts/" target="_blank" rel="noopener noreferrer" class="btn btn--linea">
+        Ver en Instagram
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="15" height="15" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+
+    <div class="mosaico revelar" data-retardo="1">
+      <figure class="ancho-2 alto-2">
+        <img src="assets/img/jardin-flor.jpg" alt="Bromelia rosa abierta entre hojas verdes" loading="lazy" width="1100" height="1100">
+        <figcaption>Bromelia en flor</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/img/jardin-cactus.jpg" alt="Cactus con flor naranja" loading="lazy" width="1100" height="1100">
+        <figcaption>Primera flor del cactus</figcaption>
+      </figure>
+      <figure>
+        <img src="assets/img/vela-colmena.jpg" alt="Vela colmena frente a las ramas de un pino" loading="lazy" width="540" height="675">
+        <figcaption>Colmena entre pinos</figcaption>
+      </figure>
+      <figure class="ancho-2">
+        <img src="assets/img/atardecer.jpg" alt="Atardecer sobre el huerto con la parra en primer plano" loading="lazy" width="1100" height="618">
+        <figcaption>Las seis de la tarde en septiembre</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ PEDIDO ══════════════════════════════ -->
+<section class="seccion pedido" id="pedido">
+  <img class="pedido__fondo" src="assets/img/atardecer.jpg" alt="" aria-hidden="true" loading="lazy">
+  <div class="pedido__velo" aria-hidden="true"></div>
+
+  <div class="contenedor pedido__rejilla">
+    <div class="revelar">
+      <p class="antetitulo">Hacer un pedido</p>
+      <h2>Cuéntame qué necesitas</h2>
+      <p>
+        De momento no hay carrito ni pasarela de pago: se habla, se acuerda y se envía.
+        Escríbeme por donde te resulte más cómodo y te digo qué hay disponible esta temporada.
+      </p>
+
+      <div class="canales">
+        <a class="canal" href="https://www.instagram.com/busybee.gardenandcrafts/" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+          <span><b>@busybee.gardenandcrafts</b><small>Mensaje directo · lo más rápido</small></span>
+        </a>
+        <a class="canal" href="mailto:hola@busybee.example">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+          <span><b>hola@busybee.example</b><small>Para pedidos grandes y encargos</small></span>
+        </a>
+        <div class="canal">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
+          <span><b>Valencia</b><small>Entrega en mano o envío a península</small></span>
+        </div>
+      </div>
+    </div>
+
+    <form class="formulario revelar" data-retardo="2" id="formulario" novalidate>
+      <h3>Escríbeme</h3>
+
+      <div class="campo">
+        <label for="nombre">Tu nombre</label>
+        <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Cómo te llamas">
+      </div>
+
+      <div class="campo">
+        <label for="email">Correo o Instagram</label>
+        <input type="text" id="email" name="email" required autocomplete="email" placeholder="Para poder contestarte">
+      </div>
+
+      <div class="campo">
+        <label for="interes">Qué te interesa</label>
+        <select id="interes" name="interes">
+          <option>Colmena</option>
+          <option>Panal</option>
+          <option>Trío enrollado</option>
+          <option>Hoja de arce</option>
+          <option>Cesta de otoño</option>
+          <option>Caja Colmena</option>
+          <option>Un encargo a medida</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label for="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="mensaje" placeholder="Cantidades, fechas, si es para regalo…"></textarea>
+      </div>
+
+      <button type="submit" class="btn btn--miel">Enviar</button>
+      <p class="aviso">Demostración: el formulario no envía nada todavía.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<!-- ══════════════════════════════ PIE ══════════════════════════════ -->
+<footer class="pie">
+  <div class="contenedor">
+    <div class="pie__rejilla">
+      <div>
+        <div class="pie__marca">
+          <img src="assets/img/logo.jpg" alt="" width="56" height="56">
+          <div>
+            <strong style="color:var(--cera-50);font-family:var(--serif);font-size:1.3rem">Busy Bee</strong><br>
+            <span style="font-size:.7rem;letter-spacing:.24em;text-transform:uppercase;color:var(--miel-400)">Arts and Crafts</span>
+          </div>
+        </div>
+        <p>Velas de cera de abeja, jardín y bordados a mano.<br>Valencia, España.</p>
+      </div>
+
+      <div>
+        <h4>La tienda</h4>
+        <ul>
+          <li><a href="#velas">Todas las velas</a></li>
+          <li><a href="#ritual">El ritual 11 · 22</a></li>
+          <li><a href="#taller">Cómo se hace</a></li>
+          <li><a href="#pedido">Hacer un pedido</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Encuéntrame</h4>
+        <ul>
+          <li><a href="https://www.instagram.com/busybee.gardenandcrafts/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="mailto:hola@busybee.example">hola@busybee.example</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pie__base">
+      <span>© <span id="anio">2026</span> Busy Bee · Arts and Crafts</span>
+      <span>Página de demostración · fotografías del perfil de @busybee.gardenandcrafts</span>
+    </div>
+  </div>
+</footer>
+
+<!-- aviso flotante -->
+<div class="brindis" id="brindis" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m5 12 5 5L20 7"/></svg>
+  <span id="brindis-texto"></span>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
