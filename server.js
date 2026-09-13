@@ -348,50 +348,6 @@ async function manejarPedido(req, res) {
   return json(res, 200, { ok: true, ref, total });
 }
 
-async function manejarConsulta(req, res) {
-  const ip = ipDe(req);
-
-  let cuerpo;
-  try {
-    cuerpo = JSON.parse(await leerCuerpo(req));
-  } catch {
-    return json(res, 400, { ok: false, error: 'No hemos entendido la petición.' });
-  }
-
-  if (limpiar(cuerpo && cuerpo.web, 100)) return json(res, 200, { ok: true });
-  if (demasiados(ip)) {
-    return json(res, 429, { ok: false, error: 'Has enviado varios mensajes seguidos. Espera unos minutos.' });
-  }
-
-  const nombre = limpiar(cuerpo.nombre, 80);
-  const contacto = limpiar(cuerpo.contacto, 120);
-  const interes = limpiar(cuerpo.interes, 60);
-  const mensaje = limpiar(cuerpo.mensaje, 800);
-
-  if (nombre.length < 2 || contacto.length < 3) {
-    return json(res, 400, { ok: false, error: 'Hacen falta tu nombre y cómo contactarte.' });
-  }
-
-  const texto = [
-    '💬 <b>Consulta desde la web</b>',
-    '',
-    `👤 ${esc(nombre)}`,
-    `📬 ${esc(contacto)}`,
-    interes ? `🕯 Le interesa: ${esc(interes)}` : '',
-    mensaje ? `\n📝 ${esc(mensaje)}` : '',
-    '',
-    `<i>${new Date().toLocaleString('es-ES', { timeZone: 'Europe/Madrid' })}</i>`
-  ].filter(Boolean).join('\n');
-
-  const envio = await avisarPorTelegram(texto);
-  log('CONSULTA', JSON.stringify({ nombre, contacto, interes, telegram: envio.ok }));
-
-  if (!envio.ok) {
-    return json(res, 200, { ok: false, error: 'No hemos podido enviar el mensaje. Prueba por Instagram.' });
-  }
-  return json(res, 200, { ok: true });
-}
-
 /* --------------------------------------------------------------------------
    Ficheros estáticos
    -------------------------------------------------------------------------- */
@@ -488,11 +444,6 @@ const servidor = http.createServer(async (req, res) => {
     if (ruta === '/api/pedido') {
       if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'Método no permitido' });
       return await manejarPedido(req, res);
-    }
-
-    if (ruta === '/api/consulta') {
-      if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'Método no permitido' });
-      return await manejarConsulta(req, res);
     }
 
     if (req.method !== 'GET' && req.method !== 'HEAD') {

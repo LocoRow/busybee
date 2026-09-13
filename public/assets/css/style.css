@@ -610,12 +610,16 @@ p{margin:0 0 1.1em}
 }
 .pedido__velo{position:absolute;inset:0;background:linear-gradient(105deg,var(--verde-900) 22%,rgba(38,51,31,.72) 62%,rgba(38,51,31,.45))}
 .pedido .contenedor{position:relative;z-index:2}
-.pedido__rejilla{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2.5rem,6vw,4.5rem);align-items:center}
 .pedido h2{color:var(--cera-50)}
 .pedido .antetitulo{color:var(--miel-400)}
 .pedido p{color:rgba(248,241,226,.8)}
 
 .canales{display:grid;gap:.9rem;margin-top:2rem}
+.canales--fila{grid-template-columns:repeat(3,1fr);gap:1.1rem;margin-top:0}
+.canales--fila .canal{flex-direction:column;align-items:flex-start;gap:.9rem;padding:1.5rem 1.4rem}
+.canales--fila .canal:hover{transform:translateY(-4px)}
+.remate{text-align:center;margin:2.8rem 0 0}
+.remate .btn{width:auto}
 .canal{
   display:flex;align-items:center;gap:1rem;
   padding:1rem 1.2rem;border-radius:var(--radio-s);
@@ -628,14 +632,6 @@ p{margin:0 0 1.1em}
 .canal b{display:block;font-weight:500;font-size:.95rem;color:var(--cera-50)}
 .canal small{color:rgba(248,241,226,.6);font-size:.8rem}
 
-.formulario{
-  background:rgba(253,250,243,.97);
-  border-radius:var(--radio);
-  padding:clamp(1.8rem,3vw,2.6rem);
-  box-shadow:var(--sombra-alta);
-  color:var(--tinta);
-}
-.formulario h3{color:var(--verde-800);margin-bottom:1.4rem}
 .campo{margin-bottom:1.1rem}
 .campo label{
   display:block;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
@@ -651,7 +647,6 @@ p{margin:0 0 1.1em}
   outline:none;border-color:var(--miel-500);box-shadow:0 0 0 3px rgba(219,154,0,.16);
 }
 .campo textarea{min-height:104px;resize:vertical}
-.formulario .btn{width:100%;justify-content:center;margin-top:.4rem}
 .aviso{font-size:.76rem;color:var(--tinta-suave);margin:.9rem 0 0;text-align:center}
 
 /* --------------------------------------------------------------------------
@@ -715,7 +710,7 @@ p{margin:0 0 1.1em}
    Adaptaciones
    -------------------------------------------------------------------------- */
 @media (max-width:1024px){
-  .portada__rejilla,.ritual__rejilla,.sobre__rejilla,.pedido__rejilla{grid-template-columns:1fr}
+  .portada__rejilla,.ritual__rejilla,.sobre__rejilla{grid-template-columns:1fr}
   .portada__foto{order:-1;max-width:480px;margin-inline:auto}
   /* la foto no debe empujar el titular fuera de pantalla */
   .portada__foto img{aspect-ratio:5/4;object-fit:cover;object-position:50% 42%;max-height:38svh;width:100%}
@@ -974,6 +969,7 @@ p{margin:0 0 1.1em}
    Adaptaciones de la pantalla de pedido
    -------------------------------------------------------------------------- */
 @media (max-width:900px){
+  .canales--fila{grid-template-columns:1fr}
   .pedido-rejilla{grid-template-columns:1fr}
   .bloque--pegajoso{position:static}
 }

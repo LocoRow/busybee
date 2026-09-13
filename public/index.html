@@ -439,71 +439,47 @@
   </div>
 </section>
 
-<!-- ══════════════════════════════ PEDIDO ══════════════════════════════ -->
+<!-- ══════════════════════════════ CONTACTO ══════════════════════════════ -->
 <section class="seccion pedido" id="pedido">
   <img class="pedido__fondo" src="assets/img/atardecer.jpg" alt="" aria-hidden="true" loading="lazy">
   <div class="pedido__velo" aria-hidden="true"></div>
 
-  <div class="contenedor pedido__rejilla">
-    <div class="revelar">
-      <p class="antetitulo">Contacto</p>
-      <h2>Cuéntame qué necesitas</h2>
-      <p>
-        Para pedir, lo más cómodo es la cesta: eliges las velas y me llegan tus datos al momento.
-        Pero si prefieres preguntar antes, encargar algo a medida o simplemente saludar,
-        escríbeme por donde te resulte más fácil.
-      </p>
-
-      <div class="canales">
-        <a class="canal" href="https://www.instagram.com/busybee.gardenandcrafts/" target="_blank" rel="noopener noreferrer">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
-          <span><b>@busybee.gardenandcrafts</b><small>Mensaje directo · lo más rápido</small></span>
-        </a>
-        <a class="canal" href="mailto:hola@busybee.example">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
-          <span><b>hola@busybee.example</b><small>Para pedidos grandes y encargos</small></span>
-        </a>
-        <div class="canal">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
-          <span><b>Valencia</b><small>Entrega en mano o envío a península</small></span>
-        </div>
+  <div class="contenedor">
+    <div class="cabecera-seccion cabecera-seccion--centro revelar">
+      <div>
+        <p class="antetitulo">Contacto</p>
+        <h2>Hablamos cuando quieras</h2>
+        <p class="entradilla" style="margin-inline:auto">
+          Para pedir, lo más cómodo es la cesta: eliges tus velas y me llegan tus datos al momento.
+          Si prefieres preguntar antes, encargar algo a medida o simplemente saludar,
+          escríbeme por donde te resulte más fácil.
+        </p>
       </div>
     </div>
 
-    <form class="formulario revelar" data-retardo="2" id="formulario" novalidate>
-      <h3>Escríbeme</h3>
+    <div class="canales canales--fila revelar" data-retardo="1">
+      <a class="canal" href="https://www.instagram.com/busybee.gardenandcrafts/" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+        <span><b>@busybee.gardenandcrafts</b><small>Mensaje directo · lo más rápido</small></span>
+      </a>
 
-      <div class="campo">
-        <label for="nombre">Tu nombre</label>
-        <input type="text" id="nombre" name="nombre" required autocomplete="name" placeholder="Cómo te llamas">
+      <a class="canal" href="mailto:hola@busybee.example">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m2 7 10 6 10-6"/></svg>
+        <span><b>hola@busybee.example</b><small>Para encargos y pedidos grandes</small></span>
+      </a>
+
+      <div class="canal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10Z"/><circle cx="12" cy="11" r="2.5"/></svg>
+        <span><b>Valencia</b><small>Entrega en mano o envío a península</small></span>
       </div>
+    </div>
 
-      <div class="campo">
-        <label for="email">Correo o Instagram</label>
-        <input type="text" id="email" name="email" required autocomplete="email" placeholder="Para poder contestarte">
-      </div>
-
-      <div class="campo">
-        <label for="interes">Qué te interesa</label>
-        <select id="interes" name="interes">
-          <option>Colmena</option>
-          <option>Panal</option>
-          <option>Trío enrollado</option>
-          <option>Hoja de arce</option>
-          <option>Cesta de otoño</option>
-          <option>Caja Colmena</option>
-          <option>Un encargo a medida</option>
-        </select>
-      </div>
-
-      <div class="campo">
-        <label for="mensaje">Mensaje</label>
-        <textarea id="mensaje" name="mensaje" placeholder="Cantidades, fechas, si es para regalo…"></textarea>
-      </div>
-
-      <button type="submit" class="btn btn--miel">Enviar</button>
-      <p class="aviso">Te contesto por donde me digas, normalmente el mismo día.</p>
-    </form>
+    <p class="remate revelar" data-retardo="2">
+      <a href="#velas" class="btn btn--miel">
+        Ver las velas
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </p>
   </div>
 </section>
 

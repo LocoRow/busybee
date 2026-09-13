@@ -430,53 +430,6 @@
 
 
   /* ------------------------------------------------------------------
-     Formulario de consulta del pie
-     ------------------------------------------------------------------ */
-  var formulario = document.getElementById('formulario');
-  if (formulario) {
-    formulario.addEventListener('submit', function (e) {
-      e.preventDefault();
-
-      var nombre = formulario.querySelector('#nombre');
-      var contacto = formulario.querySelector('#email');
-
-      if (!nombre.value.trim() || !contacto.value.trim()) {
-        avisar('Rellena tu nombre y cómo contactarte');
-        (!nombre.value.trim() ? nombre : contacto).focus();
-        return;
-      }
-
-      var boton = formulario.querySelector('button[type=submit]');
-      boton.disabled = true;
-      var original = boton.textContent;
-      boton.textContent = 'Enviando…';
-
-      fetch('/api/consulta', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          nombre: nombre.value.trim(),
-          contacto: contacto.value.trim(),
-          interes: formulario.querySelector('#interes').value,
-          mensaje: formulario.querySelector('#mensaje').value.trim(),
-          web: ''
-        })
-      })
-        .then(function (r) { return r.json().then(function (d) { return { ok: r.ok, d: d }; }); })
-        .then(function (res) {
-          if (!res.ok || !res.d.ok) throw new Error(res.d.error || 'No se ha podido enviar.');
-          avisar('¡Gracias, ' + nombre.value.trim().split(' ')[0] + '! Te escribo pronto.');
-          formulario.reset();
-        })
-        .catch(function (err) { avisar(err.message); })
-        .finally(function () {
-          boton.disabled = false;
-          boton.textContent = original;
-        });
-    });
-  }
-
-  /* ------------------------------------------------------------------
      Año en el pie
      ------------------------------------------------------------------ */
   var anio = document.getElementById('anio');

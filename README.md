@@ -36,7 +36,6 @@ contenedor y al cliente se le pide que escriba por Instagram.
 | Ruta | Qué hace |
 |---|---|
 | `POST /api/pedido` | recibe la cesta y los datos, avisa por Telegram, devuelve una referencia |
-| `POST /api/consulta` | el formulario de contacto del pie |
 | `GET /api/salud` | sonda para el healthcheck |
 
 El navegador manda sólo identificadores y cantidades: **los precios los pone
