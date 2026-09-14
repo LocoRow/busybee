@@ -1,0 +1,150 @@
+/* ==========================================================================
+   Busy Bee — panel de administración
+   Pensado para usarse desde el móvil, que es donde está Raquel.
+   ========================================================================== */
+
+.panel-body{background:var(--cera-100);min-height:100svh}
+.panel-ancho{width:min(100% - 2rem,880px);margin-inline:auto}
+
+/* --- barra superior --- */
+.panel-barra{
+  position:sticky;top:0;z-index:10;
+  background:rgba(253,250,243,.95);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--cera-200);
+  padding:.7rem 0;
+}
+.panel-barra__fila{display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.panel-barra__acciones{display:flex;gap:.6rem;flex-wrap:wrap}
+.panel-barra .marca__logo{width:40px;height:40px}
+
+/* --- entrar --- */
+.tarjeta-entrar{
+  background:#fff;border-radius:var(--radio);
+  padding:clamp(1.6rem,4vw,2.4rem);
+  box-shadow:var(--sombra);
+  max-width:26rem;margin:clamp(3rem,10vw,6rem) auto;
+}
+.tarjeta-entrar h1{font-size:1.8rem;color:var(--verde-800);margin-bottom:.5rem}
+.tarjeta-entrar p{color:var(--tinta-suave);font-size:.94rem;margin-bottom:1.4rem}
+.tarjeta-entrar .btn{width:100%;justify-content:center;margin-top:.4rem}
+
+/* --- titular --- */
+.panel-titular{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:1.2rem;flex-wrap:wrap;
+  padding:clamp(1.8rem,4vw,2.6rem) 0 1.4rem;
+}
+.panel-titular h1{font-size:clamp(1.8rem,4vw,2.6rem);color:var(--verde-800)}
+.panel-titular__acciones{display:flex;gap:.6rem;flex-wrap:wrap}
+.panel-titular .btn{width:auto}
+.panel-pista{font-size:.8rem;color:var(--tinta-suave);display:block;margin-top:.3rem}
+
+.aviso-ok{
+  background:#e8f3e4;border:1px solid #9dc292;color:#2f5227;
+  border-radius:var(--radio-s);padding:.8rem 1rem;
+  font-size:.88rem;margin-bottom:1rem;
+}
+
+.panel-pendiente{
+  background:var(--miel-100);border:1px dashed var(--miel-500);
+  color:#6b4b00;border-radius:var(--radio-s);
+  padding:.7rem 1rem;font-size:.86rem;margin-bottom:1rem;
+}
+
+/* --- ficha de producto --- */
+.ficha{
+  background:#fff;border-radius:var(--radio);
+  box-shadow:0 1px 0 rgba(38,51,31,.05),0 10px 24px -22px rgba(38,51,31,.5);
+  margin-bottom:.9rem;overflow:hidden;
+}
+.ficha--oculta{opacity:.62}
+
+.ficha__cabecera{
+  display:flex;align-items:center;gap:.9rem;
+  padding:.8rem 1rem;
+}
+.ficha__mando{display:flex;flex-direction:column;gap:.2rem;flex:none}
+.ficha__foto{
+  width:54px;height:54px;flex:none;
+  border-radius:var(--radio-s);object-fit:cover;background:var(--cera-200);
+}
+.ficha__titulo{flex:1;min-width:0}
+.ficha__titulo strong{
+  display:block;font-family:var(--serif);font-size:1.2rem;
+  color:var(--verde-800);line-height:1.2;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.ficha__titulo .panel-pista{margin-top:.15rem}
+
+.mini{
+  border-radius:999px;padding:.3rem .6rem;
+  font-size:.74rem;line-height:1;
+  color:var(--verde-700);
+  box-shadow:inset 0 0 0 1.3px rgba(78,102,80,.25);
+  transition:background var(--transicion),color var(--transicion);
+}
+.mini:hover{background:var(--verde-700);color:var(--cera-50);box-shadow:none}
+.mini:disabled{opacity:.3;cursor:not-allowed}
+.mini:disabled:hover{background:none;color:var(--verde-700);box-shadow:inset 0 0 0 1.3px rgba(78,102,80,.25)}
+.mini--abrir{flex:none;padding:.45rem .9rem;font-size:.78rem}
+
+.interruptor{
+  display:flex;align-items:center;gap:.45rem;flex:none;
+  font-size:.76rem;color:var(--tinta-suave);cursor:pointer;
+  white-space:nowrap;
+}
+.interruptor input{width:17px;height:17px;accent-color:var(--verde-700);cursor:pointer}
+
+/* --- cuerpo editable --- */
+.ficha__cuerpo{
+  padding:.4rem 1rem 1.2rem;
+  border-top:1px solid var(--cera-200);
+}
+.ficha__rejilla{
+  display:grid;grid-template-columns:1fr 1fr;gap:.9rem;
+  padding-top:1rem;
+}
+.campo--ancho{grid-column:1/-1}
+.tres{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem}
+
+.ficha__pie{
+  margin-top:1.2rem;padding-top:1rem;
+  border-top:1px solid var(--cera-200);
+  text-align:right;
+}
+.borrar{
+  font-size:.78rem;color:#a33;text-decoration:underline;
+  text-underline-offset:3px;
+}
+.borrar:hover{color:#7d1f1f}
+
+/* --- foto --- */
+.foto-fila{display:flex;align-items:center;gap:1rem}
+.foto-previa{
+  width:84px;height:84px;flex:none;
+  border-radius:var(--radio-s);object-fit:cover;background:var(--cera-200);
+}
+.archivo{
+  display:block;width:100%;font:inherit;font-size:.86rem;
+  color:var(--tinta-suave);margin-bottom:.3rem;
+}
+.archivo::file-selector-button{
+  font:inherit;font-size:.8rem;
+  margin-right:.7rem;padding:.45rem .9rem;
+  border:0;border-radius:999px;cursor:pointer;
+  background:var(--verde-700);color:var(--cera-50);
+}
+.archivo::file-selector-button:hover{background:var(--miel-500);color:var(--verde-900)}
+
+/* --- pantallas pequeñas --- */
+@media (max-width:640px){
+  .ficha__rejilla{grid-template-columns:1fr}
+  .tres{grid-template-columns:1fr}
+  .ficha__cabecera{flex-wrap:wrap}
+  .ficha__titulo{flex-basis:100%;order:3}
+  .interruptor{order:4}
+  .mini--abrir{order:5;margin-left:auto}
+  .panel-titular__acciones{width:100%}
+  .panel-titular__acciones .btn{flex:1;justify-content:center}
+}

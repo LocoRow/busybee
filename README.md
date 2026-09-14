@@ -10,8 +10,12 @@ vendedora por Telegram.
 ## Contenido
 
 ```
-server.js                    sirve public/ y expone /api/pedido y /api/consulta
+server.js                    sirve public/, el catálogo y las rutas del panel
+datos.js                     lectura y escritura del catálogo
+admin.js                     sesión del panel y guardado de fotos
+semilla.json                 catálogo inicial, sólo se usa la primera vez
 public/index.html            una sola página con todas las secciones
+public/admin.html            panel de gestión del catálogo
 public/aviso-legal.html      datos identificativos (LSSI-CE art. 10)
 public/privacidad.html       tratamiento de datos (RGPD / LOPDGDD)
 public/condiciones.html      condiciones de venta y desistimiento
@@ -30,10 +34,27 @@ Se ponen en Coolify, **nunca en el repositorio**:
 |---|---|
 | `TELEGRAM_BOT_TOKEN` | el token que da @BotFather |
 | `TELEGRAM_CHAT_ID` | el identificador numérico de la vendedora |
+| `ADMIN_PASSWORD` | contraseña del panel, mínimo 8 caracteres. Sin ella el panel queda desactivado |
+| `DATOS_DIR` | carpeta del catálogo y las fotos. **Tiene que ser un volumen** |
 | `PORT` | opcional, por defecto 3000 |
 
 Sin ellas la página funciona, pero los pedidos sólo quedan en el registro del
 contenedor y al cliente se le pide que escriba por Instagram.
+
+## El catálogo
+
+Ya no está en el código: vive en `productos.json`, dentro de `DATOS_DIR`, junto a
+las fotos. Raquel lo edita desde `/admin`.
+
+> ⚠️ **`DATOS_DIR` tiene que apuntar a un volumen de Docker.** Si no, cada
+> despliegue borra el catálogo y las fotos que haya subido, y se vuelve a
+> sembrar desde `semilla.json`.
+
+En cada guardado se deja una copia de la versión anterior en
+`productos.json.bak`.
+
+Los precios los sigue poniendo el servidor a partir de ese fichero, nunca el
+navegador.
 
 ## La API
 

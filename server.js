@@ -9,6 +9,8 @@ const http = require('node:http');
 const fs = require('node:fs');
 const fsp = require('node:fs/promises');
 const path = require('node:path');
+const datos = require('./datos');
+const admin = require('./admin');
 
 const PUERTO = Number(process.env.PORT) || 3000;
 const RAIZ = path.join(__dirname, 'public');
@@ -17,22 +19,13 @@ const TOKEN = process.env.TELEGRAM_BOT_TOKEN || '';
 const CHAT_ID = process.env.TELEGRAM_CHAT_ID || '';
 
 /* --------------------------------------------------------------------------
-   Catálogo — ESTA es la fuente de verdad de los precios.
-   El navegador sólo manda identificadores y cantidades: los precios los pone
-   el servidor, para que nadie pueda encargar una Colmena por un céntimo
-   manipulando el JavaScript.
+   Catálogo
 
-   Si cambias un precio aquí, cámbialo también en public/index.html, que es
-   donde se muestra.
+   Los precios los sigue poniendo el servidor y NO el navegador, para que nadie
+   pueda encargar una Colmena por un céntimo manipulando el JavaScript. Lo que
+   cambia es de dónde salen: antes estaban escritos aquí, ahora vienen del JSON
+   que Raquel edita desde el panel.
    -------------------------------------------------------------------------- */
-const CATALOGO = {
-  colmena:      { nombre: 'Colmena',          precio: 14 },
-  panal:        { nombre: 'Panal',            precio: 16 },
-  trio:         { nombre: 'Trío enrollado',   precio: 12 },
-  hoja:         { nombre: 'Hoja de arce',     precio: 8  },
-  cesta:        { nombre: 'Cesta de otoño',   precio: 22 },
-  caja:         { nombre: 'Caja Colmena',     precio: 37 }
-};
 
 /* --------------------------------------------------------------------------
    Versión de los estáticos.
@@ -54,13 +47,80 @@ function versionDe(relativa) {
 const V_CSS    = versionDe('assets/css/style.css');
 const V_JS     = versionDe('assets/js/main.js');
 const V_FUENTE = versionDe('assets/css/fuentes.css');
+const V_PANEL  = versionDe('assets/css/panel.css');
+const V_PANELJS= versionDe('assets/js/panel.js');
+
+/* --------------------------------------------------------------------------
+   Pintado del catálogo
+
+   Las tarjetas se generan en el servidor y no en el navegador, para que quien
+   entre sin JavaScript —o un buscador— vea los productos igual.
+   -------------------------------------------------------------------------- */
+function escHtml(v) {
+  return String(v == null ? '' : v)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function tarjeta(p, indice) {
+  const ficha = (p.ficha || []).map(t => '<span>' + escHtml(t) + '</span>').join('');
+  const insignia = p.insignia
+    ? '<span class="producto__insignia' +
+      (p.insigniaColor === 'verde' ? ' producto__insignia--verde' : '') + '">' +
+      escHtml(p.insignia) + '</span>'
+    : '';
+
+  return [
+    '<article class="producto revelar" data-retardo="' + ((indice % 3) + 1) + '">',
+      '<div class="producto__foto">',
+        insignia,
+        '<img src="/fotos/' + escHtml(p.foto) + '" alt="' + escHtml(p.alt) + '"',
+          ' loading="lazy" width="540" height="675">',
+      '</div>',
+      '<div class="producto__cuerpo">',
+        '<h3 class="producto__nombre">' + escHtml(p.nombre) + '</h3>',
+        '<p class="producto__detalle">' + escHtml(p.descripcion) + '</p>',
+        '<div class="producto__ficha">' + ficha + '</div>',
+        '<div class="producto__pie">',
+          '<p class="producto__precio">' + escHtml(p.precio) + '&nbsp;€',
+            '<small>' + escHtml(p.unidad || 'unidad') + '</small></p>',
+          '<button class="btn-anadir"',
+            ' data-id="' + escHtml(p.id) + '"',
+            ' data-ficha="' + escHtml((p.ficha || []).join(' · ')) + '"',
+            ' data-foto="/fotos/' + escHtml(p.foto) + '"',
+            ' data-nombre="' + escHtml(p.nombre) + '"',
+            ' data-precio="' + escHtml(p.precio) + '">',
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"',
+            ' aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+            ' Añadir',
+          '</button>',
+        '</div>',
+      '</div>',
+    '</article>'
+  ].join('');
+}
+
+function pintarCatalogo() {
+  const lista = datos.visibles();
+  if (!lista.length) {
+    return '<p class="entradilla" style="grid-column:1/-1;text-align:center">' +
+           'Ahora mismo no hay velas disponibles. Vuelve pronto o escríbeme por Instagram.' +
+           '</p>';
+  }
+  return lista.map(tarjeta).join('\n');
+}
 
 /** Cuelga la versión de las referencias al css y al js dentro del HTML. */
 function versionar(html) {
   return html
+    .replace('<!--PRODUCTOS-->', pintarCatalogo)
     .replace('assets/css/fuentes.css"', 'assets/css/fuentes.css?v=' + V_FUENTE + '"')
     .replace('assets/css/style.css"', 'assets/css/style.css?v=' + V_CSS + '"')
-    .replace('assets/js/main.js"', 'assets/js/main.js?v=' + V_JS + '"');
+    .replace('assets/js/main.js"', 'assets/js/main.js?v=' + V_JS + '"')
+    .replace('assets/css/panel.css"', 'assets/css/panel.css?v=' + V_PANEL + '"')
+    .replace('assets/js/panel.js"', 'assets/js/panel.js?v=' + V_PANELJS + '"');
 }
 
 const MAX_UNIDADES = 20;   // por línea
@@ -228,13 +288,14 @@ function validar(cuerpo) {
   if (c.acepto !== true) errores.push('Hay que aceptar la política de privacidad y las condiciones.');
 
   // Líneas del pedido: el navegador manda id y cantidad; el precio lo ponemos aquí.
+  const CATALOGO = datos.porId();
   const entrada = Array.isArray(c.items) ? c.items.slice(0, MAX_LINEAS) : [];
   const lineas = [];
 
   for (const it of entrada) {
     const id = limpiar(it && it.id, 40);
     const producto = CATALOGO[id];
-    if (!producto) continue;
+    if (!producto || producto.disponible === false) continue;
 
     let cantidad = Number(it.cantidad);
     if (!Number.isInteger(cantidad) || cantidad < 1) cantidad = 1;
@@ -361,6 +422,157 @@ async function manejarPedido(req, res) {
 }
 
 /* --------------------------------------------------------------------------
+   Zona de administración
+   -------------------------------------------------------------------------- */
+function esHttps(req) {
+  return (req.headers['x-forwarded-proto'] || '').split(',')[0].trim() === 'https';
+}
+
+function exigirSesion(req, res) {
+  if (!admin.ACTIVO) {
+    json(res, 503, { ok: false, error: 'El panel no está configurado: falta ADMIN_PASSWORD.' });
+    return false;
+  }
+  if (!admin.autenticado(req)) {
+    json(res, 401, { ok: false, error: 'Sesión caducada. Vuelve a entrar.' });
+    return false;
+  }
+  return true;
+}
+
+async function manejarAdmin(req, res, ruta, url) {
+
+  /* --- entrar --- */
+  if (ruta === '/api/admin/entrar' && req.method === 'POST') {
+    if (!admin.ACTIVO) {
+      return json(res, 503, { ok: false, error: 'El panel no está configurado: falta ADMIN_PASSWORD.' });
+    }
+
+    const ip = ipDe(req);
+    if (admin.bloqueado(ip)) {
+      return json(res, 429, { ok: false, error: 'Demasiados intentos. Espera diez minutos.' });
+    }
+
+    let cuerpo;
+    try { cuerpo = JSON.parse(await leerCuerpo(req)); }
+    catch { return json(res, 400, { ok: false, error: 'Petición no válida.' }); }
+
+    if (!admin.comprobarClave(cuerpo && cuerpo.clave)) {
+      admin.apuntarFallo(ip);
+      log('Intento de acceso fallido al panel desde', ip);
+      return json(res, 401, { ok: false, error: 'Contraseña incorrecta.' });
+    }
+
+    res.setHeader('Set-Cookie', admin.cabeceraSesion(admin.crearCookie(), esHttps(req)));
+    log('Acceso al panel desde', ip);
+    return json(res, 200, { ok: true });
+  }
+
+  /* --- salir --- */
+  if (ruta === '/api/admin/salir' && req.method === 'POST') {
+    res.setHeader('Set-Cookie', admin.cabeceraSesion('', esHttps(req)));
+    return json(res, 200, { ok: true });
+  }
+
+  /* --- saber si la sesión sigue viva --- */
+  if (ruta === '/api/admin/sesion' && req.method === 'GET') {
+    return json(res, 200, {
+      ok: true,
+      configurado: admin.ACTIVO,
+      dentro: admin.ACTIVO && admin.autenticado(req)
+    });
+  }
+
+  /* --- leer el catálogo completo, ocultos incluidos --- */
+  if (ruta === '/api/admin/productos' && req.method === 'GET') {
+    if (!exigirSesion(req, res)) return;
+    return json(res, 200, { ok: true, productos: datos.leer() });
+  }
+
+  /* --- guardar el catálogo entero --- */
+  if (ruta === '/api/admin/productos' && req.method === 'PUT') {
+    if (!exigirSesion(req, res)) return;
+
+    let cuerpo;
+    try { cuerpo = JSON.parse(await leerCuerpo(req, 512 * 1024)); }
+    catch { return json(res, 400, { ok: false, error: 'Petición no válida.' }); }
+
+    const entrada = Array.isArray(cuerpo && cuerpo.productos) ? cuerpo.productos : null;
+    if (!entrada) return json(res, 400, { ok: false, error: 'Faltan los productos.' });
+    if (entrada.length > 60) return json(res, 400, { ok: false, error: 'Demasiados productos.' });
+
+    // Se valida uno a uno; si alguno falla no se guarda nada
+    const limpios = [];
+    for (const bruto of entrada) {
+      const { producto, error } = datos.normalizar(bruto, limpios);
+      if (error) return json(res, 400, { ok: false, error });
+      limpios.push(producto);
+    }
+
+    await datos.guardar(limpios);
+    log('Catálogo actualizado:', limpios.length, 'productos');
+    return json(res, 200, { ok: true, productos: datos.leer() });
+  }
+
+  /* --- subir una foto --- */
+  if (ruta === '/api/admin/foto' && req.method === 'POST') {
+    if (!exigirSesion(req, res)) return;
+
+    let cuerpo;
+    try { cuerpo = JSON.parse(await leerCuerpo(req, 6 * 1024 * 1024)); }
+    catch { return json(res, 400, { ok: false, error: 'La imagen no ha llegado entera.' }); }
+
+    const { nombre, error } = await admin.guardarFoto(datos.FOTOS, cuerpo.nombre, cuerpo.datos);
+    if (error) return json(res, 400, { ok: false, error });
+
+    log('Foto subida:', nombre);
+    return json(res, 200, { ok: true, foto: nombre });
+  }
+
+  return json(res, 404, { ok: false, error: 'No encontrado' });
+}
+
+/* --------------------------------------------------------------------------
+   Fotos de producto
+   Se sirven desde el volumen. El nombre se sanea para que nadie pueda pedir
+   ../../algo y salirse de la carpeta.
+   -------------------------------------------------------------------------- */
+async function servirFoto(req, res, nombre) {
+  const limpio = path.basename(decodeURIComponent(nombre));
+  const destino = path.join(datos.FOTOS, limpio);
+
+  if (!destino.startsWith(datos.FOTOS)) {
+    return json(res, 403, { ok: false, error: 'Prohibido' });
+  }
+
+  try {
+    const info = await fsp.stat(destino);
+    const ext = path.extname(limpio).toLowerCase();
+    const etiqueta = '"' + info.size.toString(16) + '-' + info.mtimeMs.toString(16) + '"';
+
+    if (req.headers['if-none-match'] === etiqueta) {
+      res.writeHead(304, { 'ETag': etiqueta });
+      return res.end();
+    }
+
+    res.writeHead(200, {
+      'Content-Type': TIPOS[ext] || 'application/octet-stream',
+      'Content-Length': info.size,
+      // Corta: si Raquel cambia la foto de un producto tiene que verse pronto
+      'Cache-Control': 'public, max-age=300',
+      'ETag': etiqueta,
+      'X-Content-Type-Options': 'nosniff'
+    });
+
+    if (req.method === 'HEAD') return res.end();
+    fs.createReadStream(destino).pipe(res);
+  } catch {
+    res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+    res.end('Foto no encontrada');
+  }
+}
+
+/* --------------------------------------------------------------------------
    Ficheros estáticos
    -------------------------------------------------------------------------- */
 async function servirEstatico(req, res, ruta, versionPedida) {
@@ -465,9 +677,21 @@ const servidor = http.createServer(async (req, res) => {
       });
     }
 
+    if (ruta.startsWith('/api/admin/')) {
+      return await manejarAdmin(req, res, ruta, url);
+    }
+
     if (ruta === '/api/pedido') {
       if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'Método no permitido' });
       return await manejarPedido(req, res);
+    }
+
+    // Las fotos de producto viven en el volumen, no en la imagen del contenedor
+    if (ruta.startsWith('/fotos/')) {
+      if (req.method !== 'GET' && req.method !== 'HEAD') {
+        return json(res, 405, { ok: false, error: 'Método no permitido' });
+      }
+      return await servirFoto(req, res, ruta.slice('/fotos/'.length));
     }
 
     if (req.method !== 'GET' && req.method !== 'HEAD') {
@@ -481,6 +705,8 @@ const servidor = http.createServer(async (req, res) => {
     else res.end();
   }
 });
+
+datos.arrancar();
 
 servidor.listen(PUERTO, () => {
   log(`Busy Bee escuchando en el puerto ${PUERTO}`);

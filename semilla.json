@@ -1,0 +1,88 @@
+{
+  "productos": [
+    {
+      "id": "colmena",
+      "nombre": "Colmena",
+      "descripcion": "El clásico de la casa. Un skep antiguo con sus abejas subiendo por la pared, del tamaño justo para una mesilla.",
+      "ficha": ["8 cm", "≈ 14 h", "120 g"],
+      "precio": 14,
+      "unidad": "unidad",
+      "foto": "vela-colmena.jpg",
+      "alt": "Vela con forma de colmena tradicional en cera de abeja dorada, sostenida en una mano",
+      "insignia": "Más querida",
+      "insigniaColor": "miel",
+      "disponible": true,
+      "orden": 1
+    },
+    {
+      "id": "panal",
+      "nombre": "Panal",
+      "descripcion": "Cúpula de hexágonos con tres abejas posadas. El relieve va marcando la llama a medida que baja.",
+      "ficha": ["9 cm", "≈ 18 h", "160 g"],
+      "precio": 16,
+      "unidad": "unidad",
+      "foto": "vela-panal.jpg",
+      "alt": "Vela en forma de cúpula con relieve de panal hexagonal y abejas, en cera dorada",
+      "insignia": "",
+      "insigniaColor": "miel",
+      "disponible": true,
+      "orden": 2
+    },
+    {
+      "id": "trio",
+      "nombre": "Trío enrollado",
+      "descripcion": "Tres velas de lámina de cera alveolada, enrolladas a mano y atadas con rafia. Las de los días 11 y 22.",
+      "ficha": ["16 cm", "≈ 6 h", "Pack de 3"],
+      "precio": 12,
+      "unidad": "el pack",
+      "foto": "velas-laminadas.jpg",
+      "alt": "Trío de velas de lámina de cera de abeja enrollada, con abejitas y lazo de rafia",
+      "insignia": "Para el ritual",
+      "insigniaColor": "verde",
+      "disponible": true,
+      "orden": 3
+    },
+    {
+      "id": "hoja",
+      "nombre": "Hoja de arce",
+      "descripcion": "Nervadura marcada, borde irregular. Pensada para flotar en un cuenco de agua o para decorar la mesa sin encender.",
+      "ficha": ["11 cm", "≈ 5 h", "Otoño"],
+      "precio": 8,
+      "unidad": "unidad",
+      "foto": "molde-hoja.jpg",
+      "alt": "Vela con forma de hoja de arce saliendo de su molde de silicona",
+      "insignia": "Temporada",
+      "insigniaColor": "miel",
+      "disponible": true,
+      "orden": 4
+    },
+    {
+      "id": "cesta",
+      "nombre": "Cesta de otoño",
+      "descripcion": "Seis piezas surtidas: hojas, bellotas y una calabaza. Llegan en cesta de rafia, listas para regalar.",
+      "ficha": ["Surtido", "6 piezas", "Edición corta"],
+      "precio": 22,
+      "unidad": "la cesta",
+      "foto": "moldes-otono.jpg",
+      "alt": "Bandeja de moldes de silicona con formas de hojas, bellotas y calabazas",
+      "insignia": "",
+      "insigniaColor": "miel",
+      "disponible": true,
+      "orden": 5
+    },
+    {
+      "id": "caja",
+      "nombre": "Caja Colmena",
+      "descripcion": "Una Colmena, un Panal y el Trío enrollado, en caja de cartón reciclado con una nota escrita a mano.",
+      "ficha": ["3 referencias", "Envuelto", "Ahorra 5 €"],
+      "precio": 37,
+      "unidad": "la caja",
+      "foto": "fundir-cera.jpg",
+      "alt": "Cera de abeja fundida vertiéndose sobre un molde de piedra",
+      "insignia": "Regalo",
+      "insigniaColor": "verde",
+      "disponible": true,
+      "orden": 6
+    }
+  ]
+}

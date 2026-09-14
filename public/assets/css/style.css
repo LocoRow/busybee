@@ -42,6 +42,10 @@
 
 *,*::before,*::after{box-sizing:border-box}
 
+/* El atributo hidden lo pisa cualquier regla de clase que ponga display,
+   así que aquí se le devuelve la última palabra. */
+[hidden]{display:none !important}
+
 html{scroll-behavior:smooth;scroll-padding-top:88px}
 
 body{
@@ -986,8 +990,8 @@ p{margin:0 0 1.1em}
     grid-area:acciones;
     flex-direction:row;align-items:center;justify-content:space-between;
   }
-  .volver{font-size:0;padding:.6rem;gap:0}
-  .volver svg{width:17px;height:17px}
+  .pantalla__barra .volver{font-size:0;padding:.6rem;gap:0}
+  .pantalla__barra .volver svg{width:17px;height:17px}
   .dos-columnas{grid-template-columns:1fr}
   .pantalla__barra .marca__lema{display:none}
 }

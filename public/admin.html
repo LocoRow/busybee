@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Panel · Busy Bee</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#3d5138">
+<link rel="icon" href="assets/img/logo.jpg">
+<link rel="stylesheet" href="assets/css/fuentes.css">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/panel.css">
+</head>
+<body class="panel-body">
+
+<header class="panel-barra">
+  <div class="panel-ancho panel-barra__fila">
+    <span class="marca">
+      <img class="marca__logo" src="assets/img/logo.jpg" alt="" width="40" height="40">
+      <span class="marca__texto">
+        <span class="marca__nombre">Busy Bee</span>
+        <span class="marca__lema">Panel</span>
+      </span>
+    </span>
+    <div class="panel-barra__acciones" id="barra-acciones" hidden>
+      <a href="/" target="_blank" rel="noopener" class="volver">Ver la tienda</a>
+      <button type="button" class="volver" id="salir">Salir</button>
+    </div>
+  </div>
+</header>
+
+<!-- ─────────── entrar ─────────── -->
+<main class="panel-ancho" id="vista-entrar" hidden>
+  <div class="tarjeta-entrar">
+    <h1>Panel de Busy Bee</h1>
+    <p>Introduce la contraseña para gestionar el catálogo.</p>
+    <form id="form-entrar">
+      <div class="campo">
+        <label for="clave">Contraseña</label>
+        <input type="password" id="clave" autocomplete="current-password" required>
+      </div>
+      <div class="error-envio" id="error-entrar" hidden></div>
+      <button type="submit" class="btn btn--miel">Entrar</button>
+    </form>
+  </div>
+</main>
+
+<!-- ─────────── catálogo ─────────── -->
+<main class="panel-ancho" id="vista-panel" hidden>
+
+  <div class="panel-titular">
+    <div>
+      <h1>Tus velas</h1>
+      <p class="panel-pista" id="resumen">—</p>
+    </div>
+    <div class="panel-titular__acciones">
+      <button type="button" class="btn btn--linea" id="nuevo">Añadir vela</button>
+      <button type="button" class="btn btn--miel" id="guardar" disabled>Guardar cambios</button>
+    </div>
+  </div>
+
+  <div class="error-envio" id="error-panel" hidden></div>
+  <div class="aviso-ok" id="ok-panel" hidden></div>
+
+  <div class="panel-pendiente" id="pendiente" hidden>
+    Tienes cambios sin guardar.
+  </div>
+
+  <div id="lista-productos"></div>
+
+</main>
+
+<!-- ─────────── ficha de un producto ─────────── -->
+<template id="plantilla-producto">
+  <article class="ficha" data-indice="">
+    <div class="ficha__cabecera">
+      <div class="ficha__mando">
+        <button type="button" class="mini" data-subir title="Subir">↑</button>
+        <button type="button" class="mini" data-bajar title="Bajar">↓</button>
+      </div>
+      <img class="ficha__foto" alt="">
+      <div class="ficha__titulo">
+        <strong data-titulo>Sin nombre</strong>
+        <span data-resumen class="panel-pista"></span>
+      </div>
+      <label class="interruptor" title="Mostrar en la tienda">
+        <input type="checkbox" data-disponible>
+        <span>A la venta</span>
+      </label>
+      <button type="button" class="mini mini--abrir" data-abrir aria-expanded="false">Editar</button>
+    </div>
+
+    <div class="ficha__cuerpo" hidden>
+      <div class="ficha__rejilla">
+
+        <div class="campo">
+          <label>Nombre</label>
+          <input type="text" data-campo="nombre" maxlength="60">
+        </div>
+
+        <div class="campo">
+          <label>Precio en euros</label>
+          <input type="number" data-campo="precio" min="0" step="0.5" inputmode="decimal">
+        </div>
+
+        <div class="campo">
+          <label>Se vende por</label>
+          <input type="text" data-campo="unidad" maxlength="24" placeholder="unidad, el pack, la caja…">
+        </div>
+
+        <div class="campo">
+          <label>Etiqueta <span class="opcional">(opcional)</span></label>
+          <input type="text" data-campo="insignia" maxlength="24" placeholder="Más querida, Temporada…">
+        </div>
+
+        <div class="campo">
+          <label>Color de la etiqueta</label>
+          <select data-campo="insigniaColor">
+            <option value="miel">Dorado</option>
+            <option value="verde">Verde</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Identificador</label>
+          <input type="text" data-campo="id" maxlength="40" pattern="[a-z0-9-]+">
+          <span class="panel-pista">Sin espacios ni acentos. No lo cambies si ya hay pedidos con él.</span>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label>Descripción</label>
+          <textarea data-campo="descripcion" maxlength="400" rows="3"></textarea>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label>Datos cortos</label>
+          <div class="tres">
+            <input type="text" data-ficha="0" maxlength="30" placeholder="8 cm">
+            <input type="text" data-ficha="1" maxlength="30" placeholder="≈ 14 h">
+            <input type="text" data-ficha="2" maxlength="30" placeholder="120 g">
+          </div>
+          <span class="panel-pista">Las tres etiquetas pequeñas que salen bajo la descripción.</span>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label>Foto</label>
+          <div class="foto-fila">
+            <img class="foto-previa" data-previa alt="">
+            <div>
+              <input type="file" data-archivo accept="image/*" class="archivo">
+              <span class="panel-pista" data-estado-foto>Se encoge sola antes de subirla.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="campo campo--ancho">
+          <label>Texto alternativo de la foto</label>
+          <input type="text" data-campo="alt" maxlength="200">
+          <span class="panel-pista">Describe la foto para quien no pueda verla.</span>
+        </div>
+
+      </div>
+
+      <div class="ficha__pie">
+        <button type="button" class="borrar" data-borrar>Borrar esta vela</button>
+      </div>
+    </div>
+  </article>
+</template>
+
+<script src="assets/js/panel.js"></script>
+</body>
+</html>
