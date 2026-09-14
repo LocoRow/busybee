@@ -653,7 +653,7 @@ p{margin:0 0 1.1em}
    Pie
    -------------------------------------------------------------------------- */
 .pie{background:var(--verde-800);color:rgba(248,241,226,.72);padding:4rem 0 2rem;font-size:.9rem}
-.pie__rejilla{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
+.pie__rejilla{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
 .pie h4{color:var(--cera-50);font-size:1.05rem;margin-bottom:1rem;font-family:var(--sans);font-weight:500;letter-spacing:.1em;text-transform:uppercase}
 .pie ul{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
 .pie a:hover{color:var(--miel-400)}
@@ -991,3 +991,134 @@ p{margin:0 0 1.1em}
   .dos-columnas{grid-template-columns:1fr}
   .pantalla__barra .marca__lema{display:none}
 }
+
+/* ==========================================================================
+   Paginas legales
+   ========================================================================== */
+
+.doc{
+  padding:clamp(7rem,12vw,9rem) 0 clamp(4rem,8vw,6rem);
+  background:
+    radial-gradient(90% 60% at 80% 0%,#fffaf0 0%,transparent 55%),
+    var(--cera-50);
+}
+
+.doc__caja{width:min(100% - 2.6rem,760px);margin-inline:auto}
+
+.doc h1{
+  font-size:clamp(2.1rem,5vw,3.1rem);
+  color:var(--verde-800);
+  margin-bottom:.6rem;
+}
+
+.doc__fecha{
+  font-size:.76rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--tinta-suave);
+  padding-bottom:1.6rem;margin-bottom:2.2rem;
+  border-bottom:1px solid var(--cera-200);
+}
+
+.doc h2{
+  font-size:clamp(1.35rem,2.4vw,1.7rem);
+  color:var(--verde-800);
+  margin:2.6rem 0 .9rem;
+}
+.doc h3{
+  font-family:var(--sans);font-weight:600;
+  font-size:1rem;letter-spacing:.02em;
+  color:var(--verde-700);
+  margin:1.6rem 0 .5rem;
+}
+
+.doc p,.doc li{color:var(--tinta);font-size:1rem;line-height:1.75}
+.doc ul,.doc ol{padding-left:1.3rem;margin:0 0 1.1em}
+.doc li{margin-bottom:.45rem}
+.doc a{color:var(--miel-700);text-decoration:underline;text-underline-offset:3px}
+.doc a:hover{color:var(--verde-700)}
+.doc strong{color:var(--verde-800)}
+
+/* Tabla de datos identificativos y de tratamientos */
+.doc table{
+  width:100%;border-collapse:collapse;margin:1.2rem 0 1.6rem;
+  font-size:.94rem;
+}
+.doc th,.doc td{
+  text-align:left;vertical-align:top;
+  padding:.75rem .9rem;
+  border-bottom:1px solid var(--cera-200);
+}
+.doc th{
+  width:34%;
+  font-family:var(--sans);font-weight:600;
+  color:var(--verde-700);
+}
+.doc tbody tr:last-child th,.doc tbody tr:last-child td{border-bottom:0}
+
+.tabla-envoltorio{overflow-x:auto;-webkit-overflow-scrolling:touch}
+
+/* Bloque destacado */
+.doc__nota{
+  background:var(--cera-100);
+  border-left:3px solid var(--miel-500);
+  border-radius:0 var(--radio-s) var(--radio-s) 0;
+  padding:1.1rem 1.3rem;
+  margin:1.6rem 0;
+  font-size:.95rem;
+}
+.doc__nota p:last-child{margin-bottom:0}
+
+/* Dato pendiente de rellenar: tiene que cantar */
+.pendiente{
+  background:#ffe9a8;
+  color:#6b4b00;
+  font-family:var(--sans);font-weight:600;
+  font-size:.86rem;
+  padding:.12rem .5rem;border-radius:4px;
+  border:1px dashed #c98a06;
+  white-space:nowrap;
+}
+
+/* Aviso de borrador, mientras queden datos por rellenar */
+.borrador{
+  background:#fff4d6;
+  border:1px solid var(--miel-500);
+  border-radius:var(--radio-s);
+  padding:1.1rem 1.3rem;
+  margin-bottom:2.4rem;
+  font-size:.92rem;
+  color:#6b4b00;
+}
+.borrador strong{color:#6b4b00}
+.borrador p:last-child{margin-bottom:0}
+
+/* Indice de las paginas legales */
+.doc__indice{
+  display:flex;flex-wrap:wrap;gap:.6rem;
+  margin:2.8rem 0 0;padding-top:1.8rem;
+  border-top:1px solid var(--cera-200);
+}
+.doc__indice a{
+  font-size:.8rem;letter-spacing:.06em;
+  padding:.5rem 1rem;border-radius:999px;
+  text-decoration:none;
+  color:var(--verde-700);
+  box-shadow:inset 0 0 0 1.5px rgba(78,102,80,.24);
+  transition:background var(--transicion),color var(--transicion),box-shadow var(--transicion);
+}
+.doc__indice a:hover{background:var(--verde-700);color:var(--cera-50);box-shadow:none}
+.doc__indice a[aria-current="page"]{background:var(--verde-700);color:var(--cera-50);box-shadow:none}
+
+/* Aceptacion de condiciones en el formulario de pedido */
+.acepto{
+  display:flex;align-items:flex-start;gap:.7rem;
+  margin:1.2rem 0 .4rem;
+  font-size:.86rem;line-height:1.5;
+  color:var(--tinta-suave);
+}
+.acepto input{
+  flex:none;width:19px;height:19px;margin-top:.1rem;
+  accent-color:var(--verde-700);cursor:pointer;
+}
+.acepto label{cursor:pointer}
+.acepto a{color:var(--miel-700);text-decoration:underline;text-underline-offset:2px}
+.acepto a:hover{color:var(--verde-700)}

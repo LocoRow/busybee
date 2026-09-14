@@ -373,6 +373,9 @@
       if (v('direccion').length < 5) fallos.push('Escribe la dirección.');
       if (!/^\d{4,10}$/.test(v('cp'))) fallos.push('Revisa el código postal.');
       if (v('poblacion').length < 2) fallos.push('Escribe la población.');
+      if (!document.getElementById('p-acepto').checked) {
+        fallos.push('Tienes que aceptar la política de privacidad y las condiciones.');
+      }
 
       if (fallos.length) {
         errorPedido.textContent = fallos[0];
@@ -400,6 +403,7 @@
             notas: v('notas')
           },
           items: cesta.map(function (l) { return { id: l.id, cantidad: l.cantidad }; }),
+          acepto: document.getElementById('p-acepto').checked,
           web: v('web')
         })
       })

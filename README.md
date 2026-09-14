@@ -12,6 +12,10 @@ vendedora por Telegram.
 ```
 server.js                    sirve public/ y expone /api/pedido y /api/consulta
 public/index.html            una sola página con todas las secciones
+public/aviso-legal.html      datos identificativos (LSSI-CE art. 10)
+public/privacidad.html       tratamiento de datos (RGPD / LOPDGDD)
+public/condiciones.html      condiciones de venta y desistimiento
+public/assets/fonts/         tipografías alojadas aquí, no en Google
 public/assets/css/style.css  estilos, paleta y animaciones
 public/assets/js/main.js     animaciones y la cesta (pantalla completa de pedido)
 public/assets/img/           fotografías del perfil de Instagram
@@ -68,6 +72,19 @@ puerto interno **3000**, dominio `http://busybee.loco-space.com`.
 El tráfico entra por el túnel de Cloudflare, que ya tiene una regla comodín
 `*.loco-space.com → localhost:80`, así que Traefik enruta por cabecera `Host`
 sin necesidad de añadir una ruta nueva.
+
+## Pendiente antes de vender
+
+Las tres páginas legales están escritas pero llevan datos de relleno marcados
+en amarillo, que hay que sustituir por los reales:
+
+- Nombre y apellidos de la titular
+- NIF
+- Dirección completa
+- Correo de contacto
+- Si los precios incluyen IVA, medios de pago, ámbito y plazo de envío
+
+Conviene además que una gestoría revise los textos.
 
 ## Aviso
 

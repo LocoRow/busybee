@@ -16,9 +16,7 @@
 <link rel="icon" href="assets/img/logo.jpg">
 <link rel="apple-touch-icon" href="assets/img/logo.jpg">
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/fuentes.css">
 <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
@@ -517,6 +515,15 @@
           <li><a href="mailto:hola@busybee.example">hola@busybee.example</a></li>
         </ul>
       </div>
+
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="/aviso-legal">Aviso legal</a></li>
+          <li><a href="/privacidad">Privacidad</a></li>
+          <li><a href="/condiciones">Condiciones de venta</a></li>
+        </ul>
+      </div>
     </div>
 
     <div class="pie__base">
@@ -637,6 +644,15 @@
           <div class="trampa" aria-hidden="true">
             <label for="p-web">No rellenes esto</label>
             <input type="text" id="p-web" name="web" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="acepto">
+            <input type="checkbox" id="p-acepto" name="acepto" required>
+            <label for="p-acepto">
+              He leído y acepto la <a href="/privacidad" target="_blank" rel="noopener">política de privacidad</a>
+              y las <a href="/condiciones" target="_blank" rel="noopener">condiciones de venta</a>.
+              Sé que mis datos se envían por Telegram a la artesana para gestionar el pedido.
+            </label>
           </div>
 
           <button type="submit" class="btn btn--miel" id="enviar-pedido">Enviar solicitud</button>

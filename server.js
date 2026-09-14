@@ -51,12 +51,14 @@ function versionDe(relativa) {
   }
 }
 
-const V_CSS = versionDe('assets/css/style.css');
-const V_JS  = versionDe('assets/js/main.js');
+const V_CSS    = versionDe('assets/css/style.css');
+const V_JS     = versionDe('assets/js/main.js');
+const V_FUENTE = versionDe('assets/css/fuentes.css');
 
 /** Cuelga la versión de las referencias al css y al js dentro del HTML. */
 function versionar(html) {
   return html
+    .replace('assets/css/fuentes.css"', 'assets/css/fuentes.css?v=' + V_FUENTE + '"')
     .replace('assets/css/style.css"', 'assets/css/style.css?v=' + V_CSS + '"')
     .replace('assets/js/main.js"', 'assets/js/main.js?v=' + V_JS + '"');
 }
@@ -221,6 +223,10 @@ function validar(cuerpo) {
   if (!/^\d{4,10}$/.test(cliente.cp)) errores.push('El código postal no parece válido.');
   if (cliente.poblacion.length < 2) errores.push('Hace falta una población.');
 
+  // La aceptacion se comprueba tambien aqui: el navegador se puede manipular,
+  // y hay que poder demostrar que se acepto en el momento del pedido.
+  if (c.acepto !== true) errores.push('Hay que aceptar la política de privacidad y las condiciones.');
+
   // Líneas del pedido: el navegador manda id y cantidad; el precio lo ponemos aquí.
   const entrada = Array.isArray(c.items) ? c.items.slice(0, MAX_LINEAS) : [];
   const lineas = [];
@@ -331,8 +337,14 @@ async function manejarPedido(req, res) {
   const ref = referencia();
   const envio = await avisarPorTelegram(mensajeDePedido(ref, cliente, lineas, total));
 
-  // El pedido queda también en el registro del contenedor, por si Telegram fallara.
-  log('PEDIDO', ref, JSON.stringify({ cliente, lineas, total, telegram: envio.ok }));
+  // Minimizacion de datos: en marcha normal el registro solo guarda el importe
+  // y que el aviso salio. Los datos personales solo se vuelcan si Telegram ha
+  // fallado, que es el unico caso en que hacen falta para rescatar el pedido.
+  if (envio.ok) {
+    log('PEDIDO', ref, JSON.stringify({ lineas: lineas.length, total, telegram: true }));
+  } else {
+    log('PEDIDO-SIN-AVISO', ref, JSON.stringify({ cliente, lineas, total, motivo: envio.motivo }));
+  }
 
   if (!envio.ok) {
     // Devolvemos 200 a proposito: Cloudflare intercepta los 5xx del origen y
@@ -361,7 +373,19 @@ async function servirEstatico(req, res, ruta, versionPedida) {
   }
 
   try {
-    let info = await fsp.stat(destino);
+    let info = null;
+    try {
+      info = await fsp.stat(destino);
+    } catch {
+      // URLs limpias: /aviso-legal sirve aviso-legal.html
+      if (!path.extname(destino)) {
+        destino += '.html';
+        info = await fsp.stat(destino);
+      } else {
+        throw new Error('no existe');
+      }
+    }
+
     if (info.isDirectory()) {
       destino = path.join(destino, 'index.html');
       info = await fsp.stat(destino);
