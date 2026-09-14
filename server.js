@@ -11,6 +11,7 @@ const fsp = require('node:fs/promises');
 const path = require('node:path');
 const datos = require('./datos');
 const admin = require('./admin');
+const telegram = require('./telegram');
 
 const PUERTO = Number(process.env.PORT) || 3000;
 const RAIZ = path.join(__dirname, 'public');
@@ -677,6 +678,17 @@ const servidor = http.createServer(async (req, res) => {
       });
     }
 
+    if (ruta === '/api/telegram') {
+      if (req.method !== 'POST') return json(res, 405, { ok: false, error: 'Método no permitido' });
+      let cuerpo;
+      try { cuerpo = JSON.parse(await leerCuerpo(req, 64 * 1024)); }
+      catch { return json(res, 200, { ok: true }); }
+      // A Telegram se le contesta 200 siempre: un error aquí haría que
+      // reintentase el mismo mensaje una y otra vez.
+      await telegram.manejarActualizacion(req, cuerpo);
+      return json(res, 200, { ok: true });
+    }
+
     if (ruta.startsWith('/api/admin/')) {
       return await manejarAdmin(req, res, ruta, url);
     }
@@ -709,6 +721,7 @@ const servidor = http.createServer(async (req, res) => {
 datos.arrancar();
 
 servidor.listen(PUERTO, () => {
+  telegram.registrarWebhook();
   log(`Busy Bee escuchando en el puerto ${PUERTO}`);
   log(`Telegram: ${TOKEN && CHAT_ID ? 'configurado' : 'SIN CONFIGURAR (los pedidos sólo quedarán en el registro)'}`);
 });

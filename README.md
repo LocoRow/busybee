@@ -13,6 +13,7 @@ vendedora por Telegram.
 server.js                    sirve public/, el catálogo y las rutas del panel
 datos.js                     lectura y escritura del catálogo
 admin.js                     sesión del panel y guardado de fotos
+telegram.js                  comandos del bot para los cambios rápidos
 semilla.json                 catálogo inicial, sólo se usa la primera vez
 public/index.html            una sola página con todas las secciones
 public/admin.html            panel de gestión del catálogo
@@ -36,6 +37,7 @@ Se ponen en Coolify, **nunca en el repositorio**:
 | `TELEGRAM_CHAT_ID` | el identificador numérico de la vendedora |
 | `ADMIN_PASSWORD` | contraseña del panel, mínimo 8 caracteres. Sin ella el panel queda desactivado |
 | `DATOS_DIR` | carpeta del catálogo y las fotos. **Tiene que ser un volumen** |
+| `SITIO_URL` | dirección pública, para registrar el webhook de Telegram. Por defecto `https://busybee.loco-space.com` |
 | `PORT` | opcional, por defecto 3000 |
 
 Sin ellas la página funciona, pero los pedidos sólo quedan en el registro del
@@ -61,6 +63,8 @@ navegador.
 | Ruta | Qué hace |
 |---|---|
 | `POST /api/pedido` | recibe la cesta y los datos, avisa por Telegram, devuelve una referencia |
+| `POST /api/telegram` | webhook del bot. Sólo atiende al chat de la vendedora |
+| `/api/admin/*` | panel: sesión, catálogo y subida de fotos |
 | `GET /api/salud` | sonda para el healthcheck |
 
 El navegador manda sólo identificadores y cantidades: **los precios los pone
@@ -84,6 +88,23 @@ Tomada del logotipo del perfil:
 ```bash
 node server.js
 ```
+
+## Comandos del bot
+
+Para lo del día a día, sin abrir el panel:
+
+| Comando | Qué hace |
+|---|---|
+| `/lista` | ver todas las velas con su precio y estado |
+| `/agotado colmena` | quitarla de la tienda |
+| `/disponible colmena` | volver a ponerla |
+| `/precio colmena 15` | cambiar el precio |
+
+Se puede escribir el nombre en vez del identificador, con o sin acentos.
+
+El webhook se registra solo al arrancar. El secreto se deriva del propio token
+del bot, así que no hay que configurar nada más, y **sólo se atiende al chat de
+la vendedora**: a cualquier otro se le ignora en silencio.
 
 ## Despliegue
 
