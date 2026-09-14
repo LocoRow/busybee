@@ -3,8 +3,10 @@ FROM node:22-alpine
 
 WORKDIR /app
 
-# Sin dependencias: el servidor usa solo modulos de Node
-COPY server.js datos.js admin.js semilla.json ./
+# Sin dependencias: el servidor usa solo modulos de Node.
+# Se copian todos los .js en vez de enumerarlos, porque enumerarlos ya rompio
+# un despliegue al añadir un modulo nuevo y olvidarse de esta linea.
+COPY *.js semilla.json ./
 COPY public/ ./public/
 
 ENV NODE_ENV=production
